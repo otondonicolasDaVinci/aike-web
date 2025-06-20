@@ -1,73 +1,37 @@
-.home-header {
-    background-color: #1d2b2a;
-    padding: 15px 40px;
-    color: #ffffff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    z-index: 10;
+body {
+    font-family: 'Montserrat', sans-serif;
+    scroll-behavior: smooth;
 }
 
-.home-title {
-    margin: 0;
-    font-weight: 600;
-    font-size: 1.6rem;
-    color: #A9D6E5;
+.hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='600' viewBox='0 0 1200 600'%3E%3Crect width='1200' height='600' fill='%23274C77'/%3E%3Cpath d='M0 400 L200 250 L400 350 L600 200 L800 300 L1000 150 L1200 250 L1200 600 L0 600 Z' fill='%23184E77'/%3E%3Cpath d='M0 450 L200 400 L400 450 L600 350 L800 400 L1000 350 L1200 400 L1200 600 L0 600 Z' fill='%231A759F'/%3E%3Cpath d='M0 500 L200 480 L400 500 L600 470 L800 520 L1000 480 L1200 500 L1200 600 L0 600 Z' fill='%2334A0A4'/%3E%3Cpath d='M0 540 L200 530 L400 550 L600 530 L800 560 L1000 540 L1200 550 L1200 600 L0 600 Z' fill='%2376C893'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
 }
 
-.home-nav {
-    display: flex;
-    gap: 20px;
+.cabin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.home-nav a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.3s;
+.date-picker {
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
 }
 
-.home-nav a:hover {
-    color: #A9D6E5;
+.about-image {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23184E77'/%3E%3Cpath d='M0 300 L100 250 L200 280 L300 220 L400 260 L500 200 L600 240 L600 400 L0 400 Z' fill='%231A759F'/%3E%3Cpath d='M0 320 L100 310 L200 330 L300 300 L400 340 L500 310 L600 330 L600 400 L0 400 Z' fill='%2334A0A4'/%3E%3Cpath d='M0 350 L100 340 L200 360 L300 340 L400 370 L500 350 L600 360 L600 400 L0 400 Z' fill='%2376C893'/%3E%3C/svg%3E");
+    background-size: cover;
+    background-position: center;
 }
 
-.home-button {
-    background: none;
-    border: 1px solid #fff;
-    padding: 8px 16px;
-    color: #fff;
-    cursor: pointer;
-}
-
-.home-main {
-    margin-top: 80px;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.home-landing {
-    background: linear-gradient(to right, #dbe9e8, #fff);
-    padding: 100px 20px;
-}
-
-.home-landing-content h1 {
-    font-size: 2.8rem;
-    margin-bottom: 10px;
-    color: #0a4c45;
-}
-
-.home-landing-content p {
-    font-size: 1.4rem;
-    color: #3a3a3a;
-}
-
-.home-footer {
-    background-color: #1d2b2a;
-    color: #ccc;
-    text-align: center;
-    padding: 20px 10px;
-    margin-top: 40px;
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #0F766E;
+    position: absolute;
+    left: -8px;
+    top: 50%;
+    transform: translateY(-50%);
 }
