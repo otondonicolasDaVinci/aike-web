@@ -1,68 +1,8 @@
-.cabins-wrapper {
-    padding: 100px 30px 60px;
-    text-align: center;
+body {
+    font-family: 'Montserrat', sans-serif;
 }
 
-.cabins-header h1 {
-    font-size: 2.8rem;
-    color: #2c3e50;
-    margin-bottom: 10px;
-}
-
-.cabins-header p {
-    font-size: 1.1rem;
-    color: #555;
-    margin-bottom: 40px;
-}
-
-.cabins-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 30px;
-}
-
-.cabin-box {
-    background-color: #ffffff;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 30px 25px;
-    width: 300px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.cabin-text h2 {
-    font-size: 1.5rem;
-    color: #2f3e46;
-    margin-bottom: 10px;
-}
-
-.cabin-text p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 10px;
-}
-
-.cabin-text .capacity {
-    font-weight: 500;
-    color: #2c3e50;
-}
-
-.reserve-btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 15px;
-}
-
-.reserve-btn:hover {
-    background-color: #43a047;
+.cabin-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
