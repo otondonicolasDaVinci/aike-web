@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
@@ -8,7 +8,33 @@ import 'styles/Home.css'
 function Home() {
     const { user } = useAuth()
     const [menuOpen, setMenuOpen] = useState(false)
+    type Cabin = {
+        id: number
+        name: string
+        description: string
+        capacity: number
+        available: boolean
+    }
+    const [cabins, setCabins] = useState<Cabin[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
     const navigate = useNavigate()
+
+    useEffect(() => {
+        fetch('https://aike-api.onrender.com/cabins')
+            .then((response) => {
+                if (!response.ok) throw new Error('Error al cargar las cabañas')
+                return response.json()
+            })
+            .then((data) => {
+                setCabins(data.filter((cabin: Cabin) => cabin.available))
+                setLoading(false)
+            })
+            .catch((err) => {
+                setError(err.message)
+                setLoading(false)
+            })
+    }, [])
 
     const handleLogin = async () => {
         try {
@@ -181,51 +207,24 @@ function Home() {
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-12">Nuestras Cabañas</h2>
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        <div className="cabin-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                            <div className="h-48 bg-teal-700 flex items-center justify-center">
-                                <svg className="w-24 h-24 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                </svg>
-                            </div>
-                            <div className="p-6">
-                                <h3 className="text-xl font-semibold mb-2">Cabaña Calafate</h3>
-                                <p className="text-gray-600 mb-4">Perfecta para parejas, esta acogedora cabaña ofrece vistas panorámicas al lago y las montañas.</p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-teal-700 font-bold text-xl">$15.000 ARS</span>
-                                    <span className="text-gray-500 text-sm">por noche</span>
+                        {loading && <p className="status col-span-full">Cargando...</p>}
+                        {error && <p className="status col-span-full text-red-600">{error}</p>}
+                        {cabins.map((cabin) => (
+                            <div className="cabin-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300" key={cabin.id}>
+                                <div className="h-48 bg-teal-700 flex items-center justify-center">
+                                    <svg className="w-24 h-24 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                                    </svg>
+                                </div>
+                                <div className="p-6">
+                                    <h3 className="text-xl font-semibold mb-2">{cabin.name}</h3>
+                                    <p className="text-gray-600 mb-4">{cabin.description}</p>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-teal-700 font-bold text-xl">Capacidad: {cabin.capacity}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div className="cabin-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                            <div className="h-48 bg-teal-800 flex items-center justify-center">
-                                <svg className="w-24 h-24 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                </svg>
-                            </div>
-                            <div className="p-6">
-                                <h3 className="text-xl font-semibold mb-2">Cabaña Perito Moreno</h3>
-                                <p className="text-gray-600 mb-4">Espaciosa y cómoda, ideal para familias que buscan disfrutar de la naturaleza patagónica.</p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-teal-700 font-bold text-xl">$22.000 ARS</span>
-                                    <span className="text-gray-500 text-sm">por noche</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="cabin-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300">
-                            <div className="h-48 bg-teal-600 flex items-center justify-center">
-                                <svg className="w-24 h-24 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                </svg>
-                            </div>
-                            <div className="p-6">
-                                <h3 className="text-xl font-semibold mb-2">Cabaña Fitz Roy</h3>
-                                <p className="text-gray-600 mb-4">Nuestra cabaña premium con jacuzzi y terraza privada con vistas espectaculares.</p>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-teal-700 font-bold text-xl">$28.000 ARS</span>
-                                    <span className="text-gray-500 text-sm">por noche</span>
-                                </div>
-                            </div>
-                        </div>
+                        ))}
                     </div>
                 </div>
             </section>
