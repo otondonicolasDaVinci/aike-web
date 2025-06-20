@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import 'styles/Home.css'
 
 function Home() {
@@ -66,6 +66,15 @@ function Home() {
                         <a href="#cabanas" className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {!user && (
+                            <>
+                                <Link to="/login" className="text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
+                                <Link to="/register" className="text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
+                            </>
+                        )}
+                        {user && (
+                            <button onClick={handleLogout} className="text-gray-700 hover:text-teal-700 font-medium">Cerrar sesión</button>
+                        )}
                     </div>
                     <div className="md:hidden">
                         <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-700 focus:outline-none">
@@ -82,6 +91,15 @@ function Home() {
                         <a href="#cabanas" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {!user && (
+                            <>
+                                <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
+                                <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
+                            </>
+                        )}
+                        {user && (
+                            <button onClick={handleLogout} className="block py-2 text-gray-700 hover:text-teal-700 font-medium text-left w-full">Cerrar sesión</button>
+                        )}
                     </div>
                 )}
             </nav>
