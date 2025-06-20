@@ -1,15 +1,23 @@
-import 'styles/AppPage.css'
+import './styles/AppPage.css'
 
 function AppPage() {
     return (
-        <div className="page-container">
-            <h1 className="page-title">Descargá la App</h1>
-            <p className="page-subtitle">
-                Próximamente disponible en Android. La app te permitirá acceder con QR, hacer reservas, recibir notificaciones y mucho más.
+        <div className="app-page">
+            <h1>Aplicación Móvil</h1>
+            <p>
+                Nuestra app está diseñada para complementar tu estadía en nuestras cabañas. Desde allí
+                podrás acceder a tu cabaña, hablar con la IA para recibir recomendaciones personalizadas,
+                y gestionar tus reservas.
             </p>
-            <button className="coming-soon-button">Muy pronto</button>
+            <p>
+                Disponible próximamente para Android. Recibirás una notificación apenas esté lista para
+                descargar.
+            </p>
+            <button disabled className="app-coming-soon">
+                Próximamente
+            </button>
         </div>
-    )
+    );
 }
 
-export default AppPage
+export default AppPage;

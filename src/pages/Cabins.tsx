@@ -17,18 +17,16 @@ function Cabins() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('/cabins')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al cargar las cabañas')
-                }
+        fetch('https://aike-api.onrender.com/cabins')
+            .then((response) => {
+                if (!response.ok) throw new Error('Error al cargar las cabañas')
                 return response.json()
             })
-            .then(data => {
+            .then((data) => {
                 setCabins(data.filter((cabin: Cabin) => cabin.available))
                 setLoading(false)
             })
-            .catch(err => {
+            .catch((err) => {
                 setError(err.message)
                 setLoading(false)
             })
@@ -39,22 +37,24 @@ function Cabins() {
     }
 
     return (
-        <div className="page-container">
-            <h1 className="page-title">Nuestras Cabañas</h1>
-            <p className="page-subtitle">
-                Estas son las cabañas actualmente disponibles en nuestro complejo. Reservá de forma rápida, segura y 100% online.
-            </p>
+        <div className="cabins-wrapper">
+            <div className="cabins-header">
+                <h1>Conocé nuestras cabañas</h1>
+                <p>Elige entre una variedad de opciones pensadas para vos.</p>
+            </div>
 
             {loading && <p className="status">Cargando...</p>}
             {error && <p className="status error">{error}</p>}
 
-            <div className="cabins-list">
+            <div className="cabins-grid">
                 {cabins.map((cabin) => (
-                    <div className="cabin-card" key={cabin.id}>
-                        <h2>{cabin.name}</h2>
-                        <p>{cabin.description}</p>
-                        <p>Capacidad: {cabin.capacity} personas</p>
-                        <button className="reserve-button" onClick={() => handleReserve(cabin.id)}>
+                    <div className="cabin-box" key={cabin.id}>
+                        <div className="cabin-text">
+                            <h2>{cabin.name}</h2>
+                            <p>{cabin.description}</p>
+                            <p className="capacity">Capacidad: {cabin.capacity} personas</p>
+                        </div>
+                        <button className="reserve-btn" onClick={() => handleReserve(cabin.id)}>
                             Reservar
                         </button>
                     </div>

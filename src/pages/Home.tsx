@@ -1,77 +1,58 @@
-import { auth, provider } from '../firebase'
-import { signInWithPopup, signOut } from 'firebase/auth'
-import { useAuth } from '../context/AuthContext'
-import { useNavigate, Link } from 'react-router-dom'
-import 'styles/Home.css'
+import { useAuth } from '../context/AuthContext';
+import { signInWithPopup, signOut } from 'firebase/auth';
+import { auth, provider } from '../firebase';
+import { Link, useNavigate } from 'react-router-dom';
+import 'styles/Home.css';
 
 function Home() {
-    const { user } = useAuth()
-    const navigate = useNavigate()
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
-            await signInWithPopup(auth, provider)
-            navigate('/admin')
+            await signInWithPopup(auth, provider);
+            navigate('/admin');
         } catch {
-            alert('Error al iniciar sesión')
+            alert('Error al iniciar sesión');
         }
-    }
+    };
 
     const handleLogout = async () => {
-        await signOut(auth)
-        window.location.reload()
-    }
+        await signOut(auth);
+        window.location.reload();
+    };
 
     return (
         <>
-            <header className="top-nav">
-                <h2 className="brand">Aike</h2>
-                <div className="nav-links">
+            <header className="home-header">
+                <h2 className="home-title">Aike</h2>
+                <nav className="home-nav">
                     <Link to="/cabins">Cabañas</Link>
                     <Link to="/about">Nosotros</Link>
-                    <Link to="/prices">Precios</Link>
                     <Link to="/contact">Contacto</Link>
                     <Link to="/app">App</Link>
-                </div>
-                {!user && <button onClick={handleLogin}>Iniciar sesión</button>}
-                {user && <button onClick={handleLogout}>Cerrar sesión</button>}
+                </nav>
+                {!user ? (
+                    <button className="home-button" onClick={handleLogin}>Iniciar sesión</button>
+                ) : (
+                    <button className="home-button" onClick={handleLogout}>Cerrar sesión</button>
+                )}
             </header>
 
-            <div className="filters-bar">
-                <div className="filters-container">
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Entrada</label>
-                        <input type="date" />
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Salida</label>
-                        <input type="date" />
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <label>Huéspedes</label>
-                        <input type="number" min="1" defaultValue={2} />
-                    </div>
-
-                    <button className="search-button">Buscar</button>
-                </div>
-            </div>
-
-            <main>
-                <section className="landing">
-                    <div className="landing-content">
-                        <h1>Aike</h1>
-                        <p>Viví la Patagonia de forma inteligente</p>
+            <main className="home-main">
+                <section className="home-landing">
+                    <div className="home-landing-content">
+                        <h1>Bienvenido a Aike</h1>
+                        <p>Tu experiencia inteligente en la Patagonia</p>
                     </div>
                 </section>
             </main>
 
-            <footer className="footer">
-                <p>© 2025 Aike · Proyecto final de carrera · Escuela Da Vinci</p>
+            <footer className="home-footer">
+                <p>© 2025 Aike · Proyecto de tesis · Da Vinci</p>
             </footer>
         </>
-    )
+    );
 }
 
-export default Home
+export default Home;

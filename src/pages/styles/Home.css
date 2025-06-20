@@ -1,169 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600&display=swap');
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body, html, #root {
-    height: 100%;
-    font-family: 'Montserrat', sans-serif;
-}
-
-/* NAVBAR SUPERIOR */
-.top-nav {
-    background-color: #ffffff;
+.home-header {
+    background-color: #1d2b2a;
+    padding: 15px 40px;
+    color: #ffffff;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 40px;
-    border-bottom: 1px solid #e0e0e0;
     position: fixed;
-    top: 0;
     width: 100%;
-    z-index: 20;
-}
-
-.top-nav .brand {
-    font-size: 1.6rem;
-    font-weight: 700;
-    color: #2f3e46;
-}
-
-.top-nav .nav-links {
-    display: flex;
-    gap: 24px;
-}
-
-.top-nav .nav-links span {
-    color: #333;
-    font-weight: 500;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.top-nav .nav-links span:hover {
-    color: #1d2b2a;
-}
-
-.top-nav button {
-    background-color: #FF5A5F;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    padding: 8px 16px;
-    font-weight: 600;
-    cursor: pointer;
-}
-
-/* BARRA DE FILTROS */
-.filters-bar {
-    background-color: #1d2b2a;
-    display: flex;
-    justify-content: center;
-    padding: 20px 0;
-    margin-top: 65px;
-}
-
-.filters-container {
-    background-color: #2f3e46;
-    border-radius: 12px;
-    padding: 20px;
-    width: 90%;
-    max-width: 1100px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    flex-wrap: wrap;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-}
-
-.filters-container label {
-    color: #fff;
-    font-size: 0.75rem;
-    margin-bottom: 4px;
-}
-
-.filters-container input {
-    padding: 5px;
-    border-radius: 4px;
-    border: none;
-    width: 120px;
-}
-
-.filters-container input[type="number"] {
-    width: 70px;
-}
-
-.search-button {
-    background-color: #A9D6E5;
-    color: #2f3e46;
-    border: none;
-    border-radius: 6px;
-    padding: 10px 18px;
-    font-weight: 600;
-    margin-left: auto;
-    cursor: pointer;
-}
-
-/* HERO */
-.landing {
-    background-image: url('https://images.unsplash.com/photo-1603052877333-33d993f3de5e');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    color: #fff;
-    text-align: center;
-}
-
-.landing::before {
-    content: '';
-    position: absolute;
     top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(20, 30, 40, 0.6);
-    z-index: 0;
+    z-index: 10;
 }
 
-.landing-content {
-    position: relative;
-    z-index: 1;
-    padding: 0 20px;
-}
-
-.landing-content h1 {
-    font-size: 3rem;
+.home-title {
+    margin: 0;
     font-weight: 600;
-    margin-bottom: 10px;
+    font-size: 1.6rem;
     color: #A9D6E5;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-.landing-content p {
-    font-size: 1.2rem;
-    font-weight: 300;
-    color: #f0f0f0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+.home-nav {
+    display: flex;
+    gap: 20px;
 }
 
-/* SECCIONES */
-.section {
-    padding: 80px 20px;
-    color: #333;
+.home-nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.home-nav a:hover {
+    color: #A9D6E5;
+}
+
+.home-button {
+    background: none;
+    border: 1px solid #fff;
+    padding: 8px 16px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.home-main {
+    margin-top: 80px;
     text-align: center;
+    padding: 40px 20px;
 }
 
-/* FOOTER */
-.footer {
+.home-landing {
+    background: linear-gradient(to right, #dbe9e8, #fff);
+    padding: 100px 20px;
+}
+
+.home-landing-content h1 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+    color: #0a4c45;
+}
+
+.home-landing-content p {
+    font-size: 1.4rem;
+    color: #3a3a3a;
+}
+
+.home-footer {
     background-color: #1d2b2a;
     color: #ccc;
     text-align: center;
     padding: 20px 10px;
+    margin-top: 40px;
 }

@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/cabins': 'http://localhost:8082'
+      '/cabins': 'https://aike-api.onrender.com'
     }
   }
 })
