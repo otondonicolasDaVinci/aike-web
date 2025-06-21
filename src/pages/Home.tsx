@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signInWithPopup, signOut } from 'firebase/auth'
-import { auth, provider, db } from '../firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import 'styles/Home.css'
 
@@ -42,16 +41,6 @@ function Home() {
         try {
             const result = await signInWithPopup(auth, provider)
             const name = result.user.displayName || result.user.email
-            await setDoc(
-                doc(db, 'users', result.user.uid),
-                {
-                    uid: result.user.uid,
-                    email: result.user.email,
-                    username: name
-                },
-                { merge: true }
-            )
-
             let loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

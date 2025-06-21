@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { signInWithPopup } from 'firebase/auth'
-import { auth, provider, db } from '../firebase'
-import { doc, setDoc } from 'firebase/firestore'
+import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
@@ -39,15 +38,6 @@ function Login() {
         try {
             const result = await signInWithPopup(auth, provider)
             const name = result.user.displayName || result.user.email
-            await setDoc(
-                doc(db, 'users', result.user.uid),
-                {
-                    uid: result.user.uid,
-                    email: result.user.email,
-                    username: name
-                },
-                { merge: true }
-            )
 
             // Try to log in to the backend with the Google account
             let loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
