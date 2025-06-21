@@ -62,6 +62,7 @@ function Home() {
                     role: { id: 2 }
                 })
             })
+            localStorage.setItem('role', 'CLIENT')
             navigate('/')
         } catch {
             alert('Error al iniciar sesión')
@@ -71,6 +72,7 @@ function Home() {
     const handleLogout = async () => {
         if (user) await signOut(auth)
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
         window.location.reload()
     }
 

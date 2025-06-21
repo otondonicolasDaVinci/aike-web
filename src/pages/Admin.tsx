@@ -10,6 +10,7 @@ function Admin() {
             await signOut(auth)
         }
         localStorage.removeItem('token')
+        localStorage.removeItem('role')
         navigate('/')
     }
 

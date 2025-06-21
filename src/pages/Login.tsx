@@ -21,7 +21,13 @@ function Login() {
             if (!res.ok) throw new Error('Error')
             const data = await res.json()
             localStorage.setItem('token', data.token)
-            navigate('/admin')
+            try {
+                const payload = JSON.parse(atob(data.token.split('.')[1]))
+                localStorage.setItem('role', payload.role)
+            } catch {
+                localStorage.removeItem('role')
+            }
+            navigate('/')
         } catch {
             alert('Error al iniciar sesión')
         }
@@ -51,6 +57,7 @@ function Login() {
                     role: { id: 2 }
                 })
             })
+            localStorage.setItem('role', 'CLIENT')
             navigate('/')
         } catch {
             alert('Error al iniciar sesión')
