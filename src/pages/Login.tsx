@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../firebase'
+import { auth, provider, db } from '../firebase'
+import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
@@ -21,7 +22,28 @@ function Login() {
 
     const handleGoogle = async () => {
         try {
-            await signInWithPopup(auth, provider)
+            const result = await signInWithPopup(auth, provider)
+            const name = result.user.displayName || result.user.email
+            await setDoc(
+                doc(db, 'users', result.user.uid),
+                {
+                    uid: result.user.uid,
+                    email: result.user.email,
+                    username: name
+                },
+                { merge: true }
+            )
+            await fetch('https://aike-api.onrender.com/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
+                    email: result.user.email,
+                    dni: '',
+                    password: 'from-google',
+                    role: { id: 2 }
+                })
+            })
             navigate('/admin')
         } catch {
             alert('Error al iniciar sesión')
