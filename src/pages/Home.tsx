@@ -94,6 +94,14 @@ function Home() {
         window.location.reload()
     }
 
+    const handleReserve = (id: number) => {
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        } else {
+            navigate(`/reservation/${id}`)
+        }
+    }
+
     return (
         <>
             <nav className="bg-white shadow-md fixed w-full z-10">
@@ -278,12 +286,18 @@ function Home() {
                                         <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                     </svg>
                                 </div>
-                                <div className="p-6">
+                                <div className="p-6 flex flex-col">
                                     <h3 className="text-xl font-semibold mb-2">{cabin.name}</h3>
-                                    <p className="text-gray-600 mb-4">{cabin.description}</p>
-                                    <div className="flex justify-between items-center">
+                                    <p className="text-gray-600 mb-4 flex-grow">{cabin.description}</p>
+                                    <div className="flex justify-between items-center mb-4">
                                         <span className="text-teal-700 font-bold text-xl">Capacidad: {cabin.capacity}</span>
                                     </div>
+                                    <button
+                                        className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition duration-300"
+                                        onClick={() => handleReserve(cabin.id)}
+                                    >
+                                        Reservar
+                                    </button>
                                 </div>
                             </div>
                         ))}

@@ -33,7 +33,11 @@ function Cabins() {
     }, [])
 
     const handleReserve = (id: number) => {
-        navigate(`/reservation/${id}`)
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        } else {
+            navigate(`/reservation/${id}`)
+        }
     }
 
     return (
