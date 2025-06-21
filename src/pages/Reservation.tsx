@@ -22,19 +22,36 @@ function Reservation() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           cabinId: parseInt(id || '0', 10),
           startDate,
           endDate,
-          guests
-        })
+          guests,
+        }),
       });
       if (!res.ok) throw new Error('Error');
-      const data = await res.json();
-      if (data && data.init_point) {
-        window.location.href = data.init_point;
+      const reservation = await res.json();
+
+      const paymentRes = await fetch(
+        'https://aike-api.onrender.com/api/payments',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            reservationId: reservation.id,
+            amount: reservation.amount || reservation.total || 0,
+          }),
+        }
+      );
+      if (!paymentRes.ok) throw new Error('Error');
+      const payment = await paymentRes.json();
+      if (payment && payment.detail) {
+        window.location.href = payment.detail;
       } else {
         navigate('/');
       }
