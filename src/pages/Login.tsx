@@ -1,19 +1,26 @@
 import { useState } from 'react'
-import { signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 import { auth, provider, db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
 function Login() {
-    const [email, setEmail] = useState('')
+    const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            await signInWithEmailAndPassword(auth, email, password)
+            const res = await fetch('https://aike-api.onrender.com/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user, password })
+            })
+            if (!res.ok) throw new Error('Error')
+            const data = await res.json()
+            localStorage.setItem('token', data.token)
             navigate('/admin')
         } catch {
             alert('Error al iniciar sesión')
@@ -55,10 +62,10 @@ function Login() {
             <h2>Iniciar Sesión</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="Usuario"
+                    value={user}
+                    onChange={(e) => setUser(e.target.value)}
                     required
                 />
                 <input
