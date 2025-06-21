@@ -4,8 +4,9 @@ import type {JSX} from "react";
 
 function PrivateRoute({ children }: { children: JSX.Element }) {
     const { user } = useAuth();
+    const token = localStorage.getItem('token');
 
-    if (!user) {
+    if (!user && !token) {
         return <Navigate to="/" replace />;
     }
 

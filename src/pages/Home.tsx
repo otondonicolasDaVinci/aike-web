@@ -8,6 +8,7 @@ import 'styles/Home.css'
 
 function Home() {
     const { user } = useAuth()
+    const token = localStorage.getItem('token')
     const [menuOpen, setMenuOpen] = useState(false)
     type Cabin = {
         id: number
@@ -61,14 +62,15 @@ function Home() {
                     role: { id: 2 }
                 })
             })
-            navigate('/admin')
+            navigate('/')
         } catch {
             alert('Error al iniciar sesión')
         }
     }
 
     const handleLogout = async () => {
-        await signOut(auth)
+        if (user) await signOut(auth)
+        localStorage.removeItem('token')
         window.location.reload()
     }
 
@@ -88,13 +90,13 @@ function Home() {
                         <a href="#cabanas" className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
-                        {!user && (
+                        {!user && !token && (
                             <>
                                 <Link to="/login" className="text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
                                 <Link to="/register" className="text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
                             </>
                         )}
-                        {user && (
+                        {(user || token) && (
                             <button onClick={handleLogout} className="text-gray-700 hover:text-teal-700 font-medium">Cerrar sesión</button>
                         )}
                     </div>
@@ -113,13 +115,13 @@ function Home() {
                         <a href="#cabanas" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
-                        {!user && (
+                        {!user && !token && (
                             <>
                                 <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
                                 <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
                             </>
                         )}
-                        {user && (
+                        {(user || token) && (
                             <button onClick={handleLogout} className="block py-2 text-gray-700 hover:text-teal-700 font-medium text-left w-full">Cerrar sesión</button>
                         )}
                     </div>
@@ -316,7 +318,7 @@ function Home() {
             </section>
 
             <footer className="py-6 text-center bg-white" id="contacto">
-                {!user ? (
+                {!user && !token ? (
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300" onClick={handleLogin}>Iniciar sesión</button>
                 ) : (
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300" onClick={handleLogout}>Cerrar sesión</button>

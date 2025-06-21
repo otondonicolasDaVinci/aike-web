@@ -52,7 +52,7 @@ function Register() {
                     role: { id: 2 }
                 })
             })
-            navigate('/admin')
+            navigate('/')
         } catch {
             alert('Error al iniciar sesión con Google')
         }
