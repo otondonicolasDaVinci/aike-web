@@ -51,19 +51,48 @@ function Home() {
                 },
                 { merge: true }
             )
-            await fetch('https://aike-api.onrender.com/users', {
+
+            let loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    email: result.user.email,
-                    dni: '',
-                    password: 'from-google',
-                    role: { id: 2 }
-                })
+                body: JSON.stringify({ user: name, password: 'from-google' })
             })
-            localStorage.setItem('role', 'CLIENT')
-            navigate('/')
+
+            if (!loginRes.ok) {
+                await fetch('https://aike-api.onrender.com/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        email: result.user.email,
+                        dni: '',
+                        password: 'from-google',
+                        role: { id: 2 }
+                    })
+                })
+                loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: name, password: 'from-google' })
+                })
+            }
+
+            if (loginRes.ok) {
+                const data = await loginRes.json()
+                localStorage.setItem('token', data.token)
+                let role = 'CLIENT'
+                try {
+                    const payload = JSON.parse(atob(data.token.split('.')[1]))
+                    role = payload.role
+                    localStorage.setItem('role', role)
+                } catch {
+                    localStorage.removeItem('role')
+                }
+                navigate(role === 'ADMIN' ? '/admin' : '/')
+            } else {
+                localStorage.setItem('role', 'CLIENT')
+                navigate('/')
+            }
         } catch {
             alert('Error al iniciar sesión')
         }
