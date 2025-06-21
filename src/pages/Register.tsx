@@ -9,6 +9,7 @@ function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [username, setUsername] = useState('')
+    const [dni, setDni] = useState('')
     const navigate = useNavigate()
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -22,6 +23,17 @@ function Register() {
                 uid: cred.user.uid,
                 email: cred.user.email,
                 username
+            })
+            await fetch('https://aike-api.onrender.com/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: username,
+                    email,
+                    dni,
+                    password,
+                    role: { id: 2 }
+                })
             })
             navigate('/admin')
         } catch {
@@ -61,6 +73,13 @@ function Register() {
                     placeholder="Email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
+                <input
+                    type="text"
+                    placeholder="DNI"
+                    value={dni}
+                    onChange={(e) => setDni(e.target.value)}
                     required
                 />
                 <input
