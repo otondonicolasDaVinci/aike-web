@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import 'styles/Home.css'
 
 function Home() {
     const { user } = useAuth()
+    const token = localStorage.getItem('token')
     const [menuOpen, setMenuOpen] = useState(false)
     type Cabin = {
         id: number
@@ -38,15 +39,58 @@ function Home() {
 
     const handleLogin = async () => {
         try {
-            await signInWithPopup(auth, provider)
-            navigate('/admin')
+            const result = await signInWithPopup(auth, provider)
+            const name = result.user.displayName || result.user.email
+            let loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user: name, password: 'from-google' })
+            })
+
+            if (!loginRes.ok) {
+                await fetch('https://aike-api.onrender.com/users', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name,
+                        email: result.user.email,
+                        dni: '',
+                        password: 'from-google',
+                        role: { id: 2 }
+                    })
+                })
+                loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user: name, password: 'from-google' })
+                })
+            }
+
+            if (loginRes.ok) {
+                const data = await loginRes.json()
+                localStorage.setItem('token', data.token)
+                let role = 'CLIENT'
+                try {
+                    const payload = JSON.parse(atob(data.token.split('.')[1]))
+                    role = payload.role
+                    localStorage.setItem('role', role)
+                } catch {
+                    localStorage.removeItem('role')
+                }
+                navigate(role === 'ADMIN' ? '/admin' : '/')
+            } else {
+                localStorage.setItem('role', 'CLIENT')
+                navigate('/')
+            }
         } catch {
             alert('Error al iniciar sesión')
         }
     }
 
     const handleLogout = async () => {
-        await signOut(auth)
+        if (user) await signOut(auth)
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
         window.location.reload()
     }
 
@@ -66,6 +110,15 @@ function Home() {
                         <a href="#cabanas" className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {!user && !token && (
+                            <>
+                                <Link to="/login" className="text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
+                                <Link to="/register" className="text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
+                            </>
+                        )}
+                        {(user || token) && (
+                            <button onClick={handleLogout} className="text-gray-700 hover:text-teal-700 font-medium">Cerrar sesión</button>
+                        )}
                     </div>
                     <div className="md:hidden">
                         <button onClick={() => setMenuOpen(!menuOpen)} className="text-gray-700 focus:outline-none">
@@ -82,6 +135,15 @@ function Home() {
                         <a href="#cabanas" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {!user && !token && (
+                            <>
+                                <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
+                                <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
+                            </>
+                        )}
+                        {(user || token) && (
+                            <button onClick={handleLogout} className="block py-2 text-gray-700 hover:text-teal-700 font-medium text-left w-full">Cerrar sesión</button>
+                        )}
                     </div>
                 )}
             </nav>
@@ -276,7 +338,7 @@ function Home() {
             </section>
 
             <footer className="py-6 text-center bg-white" id="contacto">
-                {!user ? (
+                {!user && !token ? (
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300" onClick={handleLogin}>Iniciar sesión</button>
                 ) : (
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300" onClick={handleLogout}>Cerrar sesión</button>

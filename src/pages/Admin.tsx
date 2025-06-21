@@ -6,7 +6,11 @@ function Admin() {
     const navigate = useNavigate()
 
     const handleLogout = async () => {
-        await signOut(auth)
+        if (auth.currentUser) {
+            await signOut(auth)
+        }
+        localStorage.removeItem('token')
+        localStorage.removeItem('role')
         navigate('/')
     }
 
