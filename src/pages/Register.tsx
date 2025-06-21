@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { createUserWithEmailAndPassword, updateProfile, signInWithPopup } from 'firebase/auth'
+import { signInWithPopup } from 'firebase/auth'
 import { auth, provider, db } from '../firebase'
 import { doc, setDoc } from 'firebase/firestore'
 import { useNavigate, Link } from 'react-router-dom'
@@ -15,15 +15,6 @@ function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const cred = await createUserWithEmailAndPassword(auth, email, password)
-            if (auth.currentUser) {
-                await updateProfile(auth.currentUser, { displayName: username })
-            }
-            await setDoc(doc(db, 'users', cred.user.uid), {
-                uid: cred.user.uid,
-                email: cred.user.email,
-                username
-            })
             await fetch('https://aike-api.onrender.com/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -35,7 +26,7 @@ function Register() {
                     role: { id: 2 }
                 })
             })
-            navigate('/admin')
+            navigate('/')
         } catch {
             alert('Error al registrarse')
         }
@@ -44,13 +35,23 @@ function Register() {
     const handleGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
-            if (result.user.displayName) {
-                await setDoc(doc(db, 'users', result.user.uid), {
-                    uid: result.user.uid,
+            const name = result.user.displayName || username
+            await setDoc(doc(db, 'users', result.user.uid), {
+                uid: result.user.uid,
+                email: result.user.email,
+                username: name
+            })
+            await fetch('https://aike-api.onrender.com/users', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name,
                     email: result.user.email,
-                    username: result.user.displayName
+                    dni,
+                    password: 'from-google',
+                    role: { id: 2 }
                 })
-            }
+            })
             navigate('/admin')
         } catch {
             alert('Error al iniciar sesión con Google')
