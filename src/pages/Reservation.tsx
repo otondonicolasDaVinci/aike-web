@@ -57,6 +57,11 @@ function Reservation() {
       }
       const reservation = await res.json();
 
+      const nights =
+        (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+        86400000;
+      const amount = nights > 0 ? nights * 100 : 100;
+
       const paymentRes = await fetch(
         'https://aike-api.onrender.com/api/payments',
         {
@@ -67,7 +72,7 @@ function Reservation() {
           },
           body: JSON.stringify({
             reservationId: reservation.id,
-            amount: reservation.amount || reservation.total || 0,
+            amount,
             payerEmail: user?.email || undefined,
           }),
         }
