@@ -15,6 +15,7 @@ function Reservation() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [guests, setGuests] = useState('1');
@@ -24,6 +25,10 @@ function Reservation() {
     e.preventDefault();
     if (!token) {
       navigate('/login');
+      return;
+    }
+    if (role !== 'CLIENT') {
+      alert('Solo los clientes pueden realizar reservas');
       return;
     }
     const payload = decodeToken(token);
