@@ -79,8 +79,9 @@ function Reservation() {
       } else {
         navigate('/');
       }
-    } catch (err: any) {
-      setError(err.message || 'Error al crear la reserva');
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Error al crear la reserva';
+      setError(message);
     }
   };
 
