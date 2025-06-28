@@ -17,7 +17,7 @@ function Reservation() {
   const token = localStorage.getItem('token');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  const [guests, setGuests] = useState(1);
+  const [guests, setGuests] = useState('1');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,10 +40,13 @@ function Reservation() {
           cabin: { id: parseInt(id || '0', 10) },
           startDate,
           endDate,
-          guests,
+          guests: parseInt(guests, 10),
         }),
       });
-      if (!res.ok) throw new Error('Error');
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(text || 'Error');
+      }
       const reservation = await res.json();
 
       const paymentRes = await fetch(
@@ -60,15 +63,18 @@ function Reservation() {
           }),
         }
       );
-      if (!paymentRes.ok) throw new Error('Error');
+      if (!paymentRes.ok) {
+        const text = await paymentRes.text();
+        throw new Error(text || 'Error');
+      }
       const payment = await paymentRes.json();
       if (payment && payment.detail) {
         window.location.href = payment.detail;
       } else {
         navigate('/');
       }
-    } catch {
-      setError('Error al crear la reserva');
+    } catch (err: any) {
+      setError(err.message || 'Error al crear la reserva');
     }
   };
 
@@ -86,7 +92,14 @@ function Reservation() {
         </label>
         <label>
           Huéspedes
-          <input type="number" min="1" max="10" value={guests} onChange={e => setGuests(parseInt(e.target.value, 10))} required />
+          <input
+            type="number"
+            min="1"
+            max="10"
+            value={guests}
+            onChange={e => setGuests(e.target.value)}
+            required
+          />
         </label>
         {error && <p className="error">{error}</p>}
         <button type="submit">Continuar con pago</button>
