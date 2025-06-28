@@ -73,7 +73,6 @@ function Reservation() {
           body: JSON.stringify({
             reservationId: reservation.id,
             amount,
-            payerEmail: user?.email || undefined,
           }),
         }
       );
