@@ -2,6 +2,15 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles/Reservation.css';
 
+function decodeToken(token: string) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
 function Reservation() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -17,6 +26,8 @@ function Reservation() {
       navigate('/login');
       return;
     }
+    const payload = decodeToken(token);
+    const userId = payload?.sub;
     try {
       const res = await fetch('https://aike-api.onrender.com/reservations', {
         method: 'POST',
@@ -25,7 +36,8 @@ function Reservation() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          cabinId: parseInt(id || '0', 10),
+          user: { id: Number(userId) },
+          cabin: { id: parseInt(id || '0', 10) },
           startDate,
           endDate,
           guests,
@@ -84,3 +96,4 @@ function Reservation() {
 }
 
 export default Reservation;
+
