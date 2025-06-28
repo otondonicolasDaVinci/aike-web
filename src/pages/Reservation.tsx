@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './styles/Reservation.css';
 
 function decodeToken(token: string) {
@@ -16,6 +17,7 @@ function Reservation() {
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
   const role = localStorage.getItem('role');
+  const { user } = useAuth();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [guests, setGuests] = useState('1');
@@ -66,6 +68,7 @@ function Reservation() {
           body: JSON.stringify({
             reservationId: reservation.id,
             amount: reservation.amount || reservation.total || 0,
+            payerEmail: user?.email || undefined,
           }),
         }
       );
