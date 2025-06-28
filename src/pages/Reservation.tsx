@@ -29,6 +29,20 @@ function Reservation() {
     const payload = decodeToken(token);
     const userId = payload?.sub;
     try {
+      let userData: any = { id: Number(userId) };
+      try {
+        const userRes = await fetch(
+          `https://aike-api.onrender.com/users/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        if (userRes.ok) {
+          userData = await userRes.json();
+        }
+      } catch {
+        /* ignore and send minimal user info */
+      }
       const res = await fetch('https://aike-api.onrender.com/reservations', {
         method: 'POST',
         headers: {
@@ -36,11 +50,12 @@ function Reservation() {
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          user: { id: Number(userId) },
+          user: userData,
           cabin: { id: parseInt(id || '0', 10) },
           startDate,
           endDate,
           guests: parseInt(guests, 10),
+          status: 'PENDING',
         }),
       });
       if (!res.ok) {
