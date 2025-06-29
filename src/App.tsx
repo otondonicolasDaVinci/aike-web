@@ -9,6 +9,7 @@ import Contact from './pages/Contact';
 import AppPage from './pages/AppPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Reservation from './pages/Reservation';
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                 <Route path="/app" element={<AppPage />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="/reservation/:id" element={<Reservation />} />
             </Routes>
         </AuthProvider>
     );

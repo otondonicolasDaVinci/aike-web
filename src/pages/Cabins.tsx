@@ -33,6 +33,16 @@ function Cabins() {
     }, [])
 
     const handleReserve = (id: number) => {
+        const token = localStorage.getItem('token')
+        const role = localStorage.getItem('role')
+        if (!token) {
+            navigate('/login')
+            return
+        }
+        if (role !== 'CLIENT') {
+            alert('Solo los clientes pueden realizar reservas')
+            return
+        }
         navigate(`/reservation/${id}`)
     }
 
