@@ -14,7 +14,7 @@ function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            await fetch('https://aike-api.onrender.com/users', {
+            await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -35,7 +35,7 @@ function Register() {
         try {
             const result = await signInWithPopup(auth, provider)
             const name = result.user.displayName || username
-            await fetch('https://aike-api.onrender.com/users', {
+            await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

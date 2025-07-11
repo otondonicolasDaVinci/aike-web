@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/cabins': 'https://aike-api.onrender.com'
+      '/cabins': 'https://ymucpmxkp3.us-east-1.awsapprunner.com'
     }
   }
 })

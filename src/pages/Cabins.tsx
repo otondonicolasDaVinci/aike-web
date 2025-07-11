@@ -17,7 +17,7 @@ function Cabins() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('https://aike-api.onrender.com/cabins')
+        fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins')
             .then((response) => {
                 if (!response.ok) throw new Error('Error al cargar las cabañas')
                 return response.json()

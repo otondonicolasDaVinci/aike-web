@@ -12,7 +12,7 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const res = await fetch('https://aike-api.onrender.com/auth/login', {
+            const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user, password })
@@ -40,7 +40,7 @@ function Login() {
             const name = result.user.displayName || result.user.email
 
             // Try to log in to the backend with the Google account
-            let loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
+            let loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user: name, password: 'from-google' })
@@ -48,7 +48,7 @@ function Login() {
 
             if (!loginRes.ok) {
                 // If the user does not exist, create it and try again
-                await fetch('https://aike-api.onrender.com/users', {
+                await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -59,7 +59,7 @@ function Login() {
                         role: { id: 2 }
                     })
                 })
-                loginRes = await fetch('https://aike-api.onrender.com/auth/login', {
+                loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user: name, password: 'from-google' })
