@@ -32,7 +32,7 @@ function Reservation() {
       return;
     }
     const payload = decodeToken(token);
-    const userId = payload?.sub;
+    const userId = payload?.s;
     try {
       const res = await fetch('https://aike-api.onrender.com/reservations', {
         method: 'POST',

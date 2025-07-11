@@ -23,7 +23,7 @@ function Login() {
             let role = 'CLIENT'
             try {
                 const payload = JSON.parse(atob(data.token.split('.')[1]))
-                role = payload.role
+                role = payload.r
                 localStorage.setItem('role', role)
             } catch {
                 localStorage.removeItem('role')
@@ -72,7 +72,7 @@ function Login() {
                 let role = 'CLIENT'
                 try {
                     const payload = JSON.parse(atob(data.token.split('.')[1]))
-                    role = payload.role
+                    role = payload.r
                     localStorage.setItem('role', role)
                 } catch {
                     localStorage.removeItem('role')
