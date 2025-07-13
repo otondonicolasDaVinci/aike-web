@@ -338,11 +338,12 @@ function Home() {
                     <h2 className="text-3xl font-bold text-center mb-12">Nuestra ubicación</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                         <div>
-                            <div className="bg-teal-700 h-64 md:h-96 rounded-lg flex items-center justify-center">
-                                <svg className="w-24 h-24 text-white opacity-80" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                    <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                                </svg>
-                            </div>
+                            <iframe
+                                title="Mapa de Aike Cabañas"
+                                className="w-full h-64 md:h-96 rounded-lg"
+                                src="https://www.google.com/maps?q=Aike+Caba%C3%B1as&output=embed"
+                                loading="lazy"
+                            ></iframe>
                         </div>
                         <div>
                             <h3 className="text-2xl font-semibold mb-4">En el corazón de la Patagonia</h3>
@@ -373,7 +374,14 @@ function Home() {
                                     <span>2 horas de El Chaltén y el Monte Fitz Roy</span>
                                 </li>
                             </ul>
-                            <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300">Ver en el mapa</button>
+                            <a
+                                href="https://maps.app.goo.gl/N4DMUKS1mwNMS9AYA"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 inline-block"
+                            >
+                                Ver en el mapa
+                            </a>
                         </div>
                     </div>
                 </div>
