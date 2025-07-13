@@ -19,6 +19,7 @@ type Cabin = {
     description: string;
     capacity: number;
     available: boolean;
+    imageUrl?: string;
 };
 
 type Reservation = {
@@ -53,7 +54,7 @@ function Admin() {
     const [userForm, setUserForm] = useState<User>({ name: '', email: '', dni: '', password: '', role: { id: 2 } });
     const [editingUserId, setEditingUserId] = useState<number | null>(null);
 
-    const [cabinForm, setCabinForm] = useState<Cabin>({ name: '', description: '', capacity: 1, available: true });
+    const [cabinForm, setCabinForm] = useState<Cabin>({ name: '', description: '', capacity: 1, available: true, imageUrl: '' });
     const [editingCabinId, setEditingCabinId] = useState<number | null>(null);
 
     const [resForm, setResForm] = useState<Reservation>({ user: null, cabin: null, startDate: '', endDate: '', guests: 1, status: 'PENDING' });
@@ -125,7 +126,7 @@ function Admin() {
         const method = editingCabinId ? 'PUT' : 'POST';
         const url = editingCabinId ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins/${editingCabinId}` : 'https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins';
         await fetch(url, { method, headers, body: JSON.stringify(cabinForm) });
-        setCabinForm({ name: '', description: '', capacity: 1, available: true });
+        setCabinForm({ name: '', description: '', capacity: 1, available: true, imageUrl: '' });
         setEditingCabinId(null);
         fetchCabins();
     };
@@ -244,6 +245,7 @@ function Admin() {
                                 <th>Descripción</th>
                                 <th>Capacidad</th>
                                 <th>Disponible</th>
+                                <th>Imagen</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -255,6 +257,7 @@ function Admin() {
                                     <td>{c.description}</td>
                                     <td>{c.capacity}</td>
                                     <td>{c.available ? 'Sí' : 'No'}</td>
+                                    <td>{c.imageUrl}</td>
                                     <td className="actions">
                                         <button onClick={() => { setCabinForm({ ...c }); setEditingCabinId(c.id || null); }}>Editar</button>
                                         <button onClick={() => handleDelete('cabins', c.id!)}>Borrar</button>
@@ -267,6 +270,7 @@ function Admin() {
                         <input placeholder="Nombre" value={cabinForm.name} onChange={e => setCabinForm({ ...cabinForm, name: e.target.value })} required />
                         <input placeholder="Descripción" value={cabinForm.description} onChange={e => setCabinForm({ ...cabinForm, description: e.target.value })} required />
                         <input type="number" placeholder="Capacidad" value={cabinForm.capacity} onChange={e => setCabinForm({ ...cabinForm, capacity: Number(e.target.value) })} required />
+                        <input placeholder="Imagen URL" value={cabinForm.imageUrl || ''} onChange={e => setCabinForm({ ...cabinForm, imageUrl: e.target.value })} />
                         <select value={cabinForm.available ? '1' : '0'} onChange={e => setCabinForm({ ...cabinForm, available: e.target.value === '1' })}>
                             <option value="1">Disponible</option>
                             <option value="0">No disponible</option>
