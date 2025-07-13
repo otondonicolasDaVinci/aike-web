@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom';
-import BackButton from './BackButton';
+import Navbar from './Navbar';
 
 function Layout() {
     return (
         <>
-            <BackButton />
+            <Navbar />
             <div className="pt-16">
                 <Outlet />
             </div>
