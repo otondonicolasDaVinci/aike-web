@@ -220,7 +220,11 @@ function Home() {
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-12">Nuestra Historia</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                        <div className="about-image h-96 rounded-lg shadow-lg"></div>
+                        <img
+                            src={parejaAike}
+                            alt="Pareja fundadora de Aike"
+                            className="h-96 w-full object-cover rounded-lg shadow-lg mx-auto"
+                        />
                         <div>
                             <h3 className="text-2xl font-semibold mb-6 text-teal-700">El sueño de Aike</h3>
                             <p className="text-gray-700 mb-6 leading-relaxed">
@@ -238,11 +242,6 @@ function Home() {
 
                     <div className="mt-16">
                         <h3 className="text-2xl font-semibold mb-8 text-center">Nuestra Trayectoria</h3>
-                        <img
-                            src={parejaAike}
-                            alt="Pareja fundadora de Aike"
-                            className="mx-auto mb-8 rounded-lg shadow-lg max-w-md w-full"
-                        />
                         <div className="relative border-l-2 border-teal-600 pl-8 ml-4 space-y-10 max-w-3xl mx-auto">
                             <div className="relative">
                                 <div className="timeline-dot"></div>
