@@ -8,6 +8,15 @@ import 'styles/Home.css'
 function Home() {
     const { user } = useAuth()
     const token = localStorage.getItem('token')
+    let role = localStorage.getItem('role')
+    if (!role && token) {
+        try {
+            role = JSON.parse(atob(token.split('.')[1])).r
+        } catch {
+            role = null
+        }
+    }
+    const isAdmin = role === 'ADMIN'
     const [menuOpen, setMenuOpen] = useState(false)
     type Cabin = {
         id: number
@@ -131,6 +140,9 @@ function Home() {
                         <a href="#cabanas" className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {isAdmin && (
+                            <Link to="/admin" className="text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
+                        )}
                         {!user && !token && (
                             <>
                                 <Link to="/login" className="text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
@@ -156,6 +168,9 @@ function Home() {
                         <a href="#cabanas" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                         <a href="#ubicacion" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
                         <a href="#contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                        {isAdmin && (
+                            <Link to="/admin" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
+                        )}
                         {!user && !token && (
                             <>
                                 <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
