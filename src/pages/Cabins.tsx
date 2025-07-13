@@ -8,6 +8,7 @@ type Cabin = {
     description: string
     capacity: number
     available: boolean
+    imageUrl?: string
 }
 
 function Cabins() {
@@ -68,14 +69,18 @@ function Cabins() {
                             className="cabin-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 flex flex-col"
                         >
                             <div className="h-48 bg-teal-700 flex items-center justify-center">
-                                <svg
-                                    className="w-24 h-24 text-white opacity-80"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                                </svg>
+                                {cabin.imageUrl ? (
+                                    <img src={cabin.imageUrl} alt={cabin.name} className="object-cover w-full h-full" />
+                                ) : (
+                                    <svg
+                                        className="w-24 h-24 text-white opacity-80"
+                                        fill="currentColor"
+                                        viewBox="0 0 20 20"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                                    </svg>
+                                )}
                             </div>
                             <div className="p-6 flex flex-col flex-grow">
                                 <h2 className="text-xl font-semibold mb-2">{cabin.name}</h2>
