@@ -4,6 +4,7 @@ import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import 'styles/Home.css'
+import parejaAike from '../assets/pareja_aike.png'
 
 function Home() {
     const { user } = useAuth()
@@ -237,6 +238,11 @@ function Home() {
 
                     <div className="mt-16">
                         <h3 className="text-2xl font-semibold mb-8 text-center">Nuestra Trayectoria</h3>
+                        <img
+                            src={parejaAike}
+                            alt="Pareja fundadora de Aike"
+                            className="mx-auto mb-8 rounded-lg shadow-lg max-w-md w-full"
+                        />
                         <div className="relative border-l-2 border-teal-600 pl-8 ml-4 space-y-10 max-w-3xl mx-auto">
                             <div className="relative">
                                 <div className="timeline-dot"></div>
