@@ -4,8 +4,6 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import "./styles/Admin.css";
 
-const MAX_IMAGE_WIDTH = 300;
-const MAX_IMAGE_HEIGHT = 192;
 
 type User = {
   id?: number;
@@ -107,9 +105,7 @@ async function validateImage(url: string) {
   }
   return new Promise<boolean>(resolve => {
     const img = new Image();
-    img.onload = () => {
-      resolve(img.width <= MAX_IMAGE_WIDTH && img.height <= MAX_IMAGE_HEIGHT);
-    };
+    img.onload = () => resolve(true);
     img.onerror = () => resolve(false);
     img.src = url;
   });
@@ -193,7 +189,7 @@ async function validateImage(url: string) {
       const valid = await validateImage(cabinForm.imageUrl);
       if (!valid) {
         setCabinImgError(
-          `La imagen debe ser JPG o PNG y no superar ${MAX_IMAGE_WIDTH}x${MAX_IMAGE_HEIGHT}px`
+          "La imagen debe ser un archivo JPG o PNG válido"
         );
         return;
       }
@@ -256,7 +252,7 @@ async function validateImage(url: string) {
       const valid = await validateImage(productForm.imageUrl);
       if (!valid) {
         setProductImgError(
-          `La imagen debe ser JPG o PNG y no superar ${MAX_IMAGE_WIDTH}x${MAX_IMAGE_HEIGHT}px`
+          "La imagen debe ser un archivo JPG o PNG válido"
         );
         return;
       }
