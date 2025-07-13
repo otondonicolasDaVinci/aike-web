@@ -31,14 +31,24 @@ type Reservation = {
     status: string;
 };
 
+type Product = {
+    id?: number;
+    title: string;
+    description: string;
+    price: number;
+    imageUrl: string;
+    category: string;
+};
+
 function Admin() {
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
 
-    const [tab, setTab] = useState<'users' | 'cabins' | 'reservations'>('users');
+    const [tab, setTab] = useState<'users' | 'cabins' | 'reservations' | 'products'>('users');
     const [users, setUsers] = useState<User[]>([]);
     const [cabins, setCabins] = useState<Cabin[]>([]);
     const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [products, setProducts] = useState<Product[]>([]);
 
     const [userForm, setUserForm] = useState<User>({ name: '', email: '', dni: '', password: '', role: { id: 2 } });
     const [editingUserId, setEditingUserId] = useState<number | null>(null);
@@ -48,6 +58,9 @@ function Admin() {
 
     const [resForm, setResForm] = useState<Reservation>({ user: null, cabin: null, startDate: '', endDate: '', guests: 1, status: 'PENDING' });
     const [editingResId, setEditingResId] = useState<number | null>(null);
+
+    const [productForm, setProductForm] = useState<Product>({ title: '', description: '', price: 0, imageUrl: '', category: '' });
+    const [editingProductId, setEditingProductId] = useState<number | null>(null);
 
     const headers = useMemo(() => {
         const h: Record<string, string> = { 'Content-Type': 'application/json' };
@@ -70,6 +83,11 @@ function Admin() {
         if (res.ok) setReservations(await res.json());
     }, [headers]);
 
+    const fetchProducts = useCallback(async () => {
+        const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/products', { headers });
+        if (res.ok) setProducts(await res.json());
+    }, [headers]);
+
     useEffect(() => {
         if (tab === 'users') fetchUsers();
         if (tab === 'cabins') fetchCabins();
@@ -78,7 +96,8 @@ function Admin() {
             fetchUsers();
             fetchCabins();
         }
-    }, [tab, fetchUsers, fetchCabins, fetchReservations]);
+        if (tab === 'products') fetchProducts();
+    }, [tab, fetchUsers, fetchCabins, fetchReservations, fetchProducts]);
 
     const handleLogout = async () => {
         if (auth.currentUser) await signOut(auth);
@@ -135,11 +154,25 @@ function Admin() {
         fetchReservations();
     };
 
+    const handleProductSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const method = editingProductId ? 'PUT' : 'POST';
+        const url = editingProductId
+            ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/products/${editingProductId}`
+            : 'https://ymucpmxkp3.us-east-1.awsapprunner.com/products';
+
+        await fetch(url, { method, headers, body: JSON.stringify(productForm) });
+        setProductForm({ title: '', description: '', price: 0, imageUrl: '', category: '' });
+        setEditingProductId(null);
+        fetchProducts();
+    };
+
     const handleDelete = async (entity: string, id: number) => {
         await fetch(`https://ymucpmxkp3.us-east-1.awsapprunner.com/${entity}/${id}`, { method: 'DELETE', headers });
         if (entity === 'users') fetchUsers();
         if (entity === 'cabins') fetchCabins();
         if (entity === 'reservations') fetchReservations();
+        if (entity === 'products') fetchProducts();
     };
 
     return (
@@ -149,6 +182,7 @@ function Admin() {
                 <button className={tab === 'users' ? 'active' : ''} onClick={() => setTab('users')}>Usuarios</button>
                 <button className={tab === 'cabins' ? 'active' : ''} onClick={() => setTab('cabins')}>Cabañas</button>
                 <button className={tab === 'reservations' ? 'active' : ''} onClick={() => setTab('reservations')}>Reservas</button>
+                <button className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')}>Productos</button>
                 <button onClick={handleLogout} className="logout">Logout</button>
             </div>
 
@@ -316,7 +350,49 @@ function Admin() {
                             <option value="CONFIRMED">CONFIRMED</option>
                             <option value="CANCELLED">CANCELLED</option>
                         </select>
-                        <button type="submit">{editingResId ? 'Actualizar' : 'Crear'}</button>
+                    <button type="submit">{editingResId ? 'Actualizar' : 'Crear'}</button>
+                </form>
+            </div>
+        )}
+
+            {tab === 'products' && (
+                <div>
+                    <table className="admin-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Título</th>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Imagen</th>
+                                <th>Categoría</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {products.map((p) => (
+                                <tr key={p.id}>
+                                    <td>{p.id}</td>
+                                    <td>{p.title}</td>
+                                    <td>{p.description}</td>
+                                    <td>{p.price}</td>
+                                    <td>{p.imageUrl}</td>
+                                    <td>{p.category}</td>
+                                    <td className="actions">
+                                        <button onClick={() => { setProductForm({ ...p }); setEditingProductId(p.id || null); }}>Editar</button>
+                                        <button onClick={() => handleDelete('products', p.id!)}>Borrar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <form onSubmit={handleProductSubmit} className="admin-form">
+                        <input placeholder="Título" value={productForm.title} onChange={e => setProductForm({ ...productForm, title: e.target.value })} required />
+                        <input placeholder="Descripción" value={productForm.description} onChange={e => setProductForm({ ...productForm, description: e.target.value })} required />
+                        <input type="number" placeholder="Precio" value={productForm.price} onChange={e => setProductForm({ ...productForm, price: Number(e.target.value) })} required />
+                        <input placeholder="Imagen URL" value={productForm.imageUrl} onChange={e => setProductForm({ ...productForm, imageUrl: e.target.value })} required />
+                        <input placeholder="Categoría" value={productForm.category} onChange={e => setProductForm({ ...productForm, category: e.target.value })} required />
+                        <button type="submit">{editingProductId ? 'Actualizar' : 'Crear'}</button>
                     </form>
                 </div>
             )}
