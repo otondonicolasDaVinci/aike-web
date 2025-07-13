@@ -10,20 +10,23 @@ import AppPage from './pages/AppPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Reservation from './pages/Reservation';
+import Layout from './components/Layout';
 
 function App() {
     return (
         <AuthProvider>
             <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
-                <Route path="/cabins" element={<Cabins />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/contacto" element={<Contact />} />
-                <Route path="/app" element={<AppPage />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/reservation/:id" element={<Reservation />} />
+                <Route path="/" element={<Layout />}> 
+                    <Route index element={<Home />} />
+                    <Route path="admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
+                    <Route path="cabins" element={<Cabins />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="contacto" element={<Contact />} />
+                    <Route path="app" element={<AppPage />} />
+                    <Route path="login" element={<Login />} />
+                    <Route path="register" element={<Register />} />
+                    <Route path="reservation/:id" element={<Reservation />} />
+                </Route>
             </Routes>
         </AuthProvider>
     );
