@@ -9,7 +9,7 @@ function PrivateRoute({ children }: { children: JSX.Element }) {
 
     if (!role && token) {
         try {
-            role = JSON.parse(atob(token.split('.')[1])).role;
+            role = JSON.parse(atob(token.split('.')[1])).r;
         } catch {
             role = null;
         }

@@ -15,7 +15,7 @@ function Reservation() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const token = localStorage.getItem('token');
-  const role = localStorage.getItem('role');
+  let role = localStorage.getItem('role');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [guests, setGuests] = useState('1');
@@ -27,12 +27,19 @@ function Reservation() {
       navigate('/login');
       return;
     }
+    if (!role) {
+      try {
+        role = JSON.parse(atob(token.split('.')[1])).r;
+      } catch {
+        role = null;
+      }
+    }
     if (role !== 'CLIENT') {
       alert('Solo los clientes pueden realizar reservas');
       return;
     }
     const payload = decodeToken(token);
-    const userId = payload?.sub;
+    const userId = payload?.s;
     try {
       const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations', {
         method: 'POST',

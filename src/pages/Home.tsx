@@ -72,7 +72,7 @@ function Home() {
                 let role = 'CLIENT'
                 try {
                     const payload = JSON.parse(atob(data.token.split('.')[1]))
-                    role = payload.role
+                    role = payload.r
                     localStorage.setItem('role', role)
                 } catch {
                     localStorage.removeItem('role')
@@ -96,10 +96,17 @@ function Home() {
 
     const handleReserve = (id: number) => {
         const token = localStorage.getItem('token')
-        const role = localStorage.getItem('role')
+        let role = localStorage.getItem('role')
         if (!token) {
             navigate('/login')
             return
+        }
+        if (!role) {
+            try {
+                role = JSON.parse(atob(token.split('.')[1])).r
+            } catch {
+                role = null
+            }
         }
         if (role !== 'CLIENT') {
             alert('Solo los clientes pueden realizar reservas')
