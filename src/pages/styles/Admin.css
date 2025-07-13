@@ -26,6 +26,10 @@
     margin-left: auto;
 }
 
+.admin-nav .home {
+    background-color: #0369a1;
+}
+
 .admin-table {
     width: 100%;
     border-collapse: collapse;

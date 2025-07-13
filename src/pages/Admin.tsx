@@ -106,6 +106,10 @@ function Admin() {
         navigate('/');
     };
 
+    const handleHome = () => {
+        navigate('/');
+    };
+
     const handleUserSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const method = editingUserId ? 'PUT' : 'POST';
@@ -183,6 +187,7 @@ function Admin() {
                 <button className={tab === 'cabins' ? 'active' : ''} onClick={() => setTab('cabins')}>Cabañas</button>
                 <button className={tab === 'reservations' ? 'active' : ''} onClick={() => setTab('reservations')}>Reservas</button>
                 <button className={tab === 'products' ? 'active' : ''} onClick={() => setTab('products')}>Productos</button>
+                <button onClick={handleHome} className="home">Inicio</button>
                 <button onClick={handleLogout} className="logout">Logout</button>
             </div>
 
