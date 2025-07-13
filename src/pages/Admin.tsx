@@ -100,7 +100,7 @@ const headers = useMemo(() => {
 }, [token]);
 
 async function validateImage(url: string) {
-  if (!/\.(png|jpe?g)$/i.test(url)) {
+  if (!/\.(png|jpe?g)(\?.*)?$/i.test(url)) {
     return false;
   }
   return new Promise<boolean>(resolve => {
