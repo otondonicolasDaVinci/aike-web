@@ -56,17 +56,17 @@ function Admin() {
     }, [token]);
 
     const fetchUsers = useCallback(async () => {
-        const res = await fetch('https://aike-api.onrender.com/users', { headers });
+        const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', { headers });
         if (res.ok) setUsers(await res.json());
     }, [headers]);
 
     const fetchCabins = useCallback(async () => {
-        const res = await fetch('https://aike-api.onrender.com/cabins', { headers });
+        const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins', { headers });
         if (res.ok) setCabins(await res.json());
     }, [headers]);
 
     const fetchReservations = useCallback(async () => {
-        const res = await fetch('https://aike-api.onrender.com/reservations', { headers });
+        const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations', { headers });
         if (res.ok) setReservations(await res.json());
     }, [headers]);
 
@@ -90,7 +90,7 @@ function Admin() {
     const handleUserSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const method = editingUserId ? 'PUT' : 'POST';
-        const url = editingUserId ? `https://aike-api.onrender.com/users/${editingUserId}` : 'https://aike-api.onrender.com/users';
+        const url = editingUserId ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/users/${editingUserId}` : 'https://ymucpmxkp3.us-east-1.awsapprunner.com/users';
         await fetch(url, { method, headers, body: JSON.stringify(userForm) });
         setUserForm({ name: '', email: '', dni: '', password: '', role: { id: 2 } });
         setEditingUserId(null);
@@ -100,7 +100,7 @@ function Admin() {
     const handleCabinSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const method = editingCabinId ? 'PUT' : 'POST';
-        const url = editingCabinId ? `https://aike-api.onrender.com/cabins/${editingCabinId}` : 'https://aike-api.onrender.com/cabins';
+        const url = editingCabinId ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins/${editingCabinId}` : 'https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins';
         await fetch(url, { method, headers, body: JSON.stringify(cabinForm) });
         setCabinForm({ name: '', description: '', capacity: 1, available: true });
         setEditingCabinId(null);
@@ -111,8 +111,8 @@ function Admin() {
         e.preventDefault();
         const method = editingResId ? 'PUT' : 'POST';
         const url = editingResId
-            ? `https://aike-api.onrender.com/reservations/${editingResId}`
-            : 'https://aike-api.onrender.com/reservations';
+            ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations/${editingResId}`
+            : 'https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations';
 
         const body = editingResId
             ? {
@@ -136,7 +136,7 @@ function Admin() {
     };
 
     const handleDelete = async (entity: string, id: number) => {
-        await fetch(`https://aike-api.onrender.com/${entity}/${id}`, { method: 'DELETE', headers });
+        await fetch(`https://ymucpmxkp3.us-east-1.awsapprunner.com/${entity}/${id}`, { method: 'DELETE', headers });
         if (entity === 'users') fetchUsers();
         if (entity === 'cabins') fetchCabins();
         if (entity === 'reservations') fetchReservations();

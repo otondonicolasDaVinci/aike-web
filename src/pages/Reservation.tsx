@@ -41,7 +41,7 @@ function Reservation() {
     const payload = decodeToken(token);
     const userId = payload?.s;
     try {
-      const res = await fetch('https://aike-api.onrender.com/reservations', {
+      const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ function Reservation() {
       const amount = nights > 0 ? nights * 100 : 100;
 
       const paymentRes = await fetch(
-        'https://aike-api.onrender.com/api/payments',
+        'https://ymucpmxkp3.us-east-1.awsapprunner.com/api/payments',
         {
           method: 'POST',
           headers: {
