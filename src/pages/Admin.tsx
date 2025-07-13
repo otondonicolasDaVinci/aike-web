@@ -4,6 +4,9 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import "./styles/Admin.css";
 
+const MAX_IMAGE_WIDTH = 300;
+const MAX_IMAGE_HEIGHT = 192;
+
 type User = {
   id?: number;
   name: string;
@@ -69,6 +72,7 @@ function Admin() {
     available: true,
     imageUrl: ""
   });
+  const [cabinImgError, setCabinImgError] = useState<string | null>(null);
   const [editingCabinId, setEditingCabinId] = useState<number | null>(null);
 
   const [resForm, setResForm] = useState<Reservation>({
@@ -88,13 +92,28 @@ function Admin() {
     imageUrl: "",
     category: ""
   });
+  const [productImgError, setProductImgError] = useState<string | null>(null);
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
 
-  const headers = useMemo(() => {
-    const h: Record<string, string> = { "Content-Type": "application/json" };
-    if (token) h.Authorization = `Bearer ${token}`;
-    return h;
-  }, [token]);
+const headers = useMemo(() => {
+  const h: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) h.Authorization = `Bearer ${token}`;
+  return h;
+}, [token]);
+
+async function validateImage(url: string) {
+  if (!/\.(png|jpe?g)$/i.test(url)) {
+    return false;
+  }
+  return new Promise<boolean>(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      resolve(img.width <= MAX_IMAGE_WIDTH && img.height <= MAX_IMAGE_HEIGHT);
+    };
+    img.onerror = () => resolve(false);
+    img.src = url;
+  });
+}
 
   const fetchUsers = useCallback(async () => {
     const res = await fetch(
@@ -170,6 +189,16 @@ function Admin() {
 
   const handleCabinSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (cabinForm.imageUrl) {
+      const valid = await validateImage(cabinForm.imageUrl);
+      if (!valid) {
+        setCabinImgError(
+          `La imagen debe ser JPG o PNG y no superar ${MAX_IMAGE_WIDTH}x${MAX_IMAGE_HEIGHT}px`
+        );
+        return;
+      }
+    }
+    setCabinImgError(null);
     const method = editingCabinId ? "PUT" : "POST";
     const url = editingCabinId
       ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins/${editingCabinId}`
@@ -223,6 +252,16 @@ function Admin() {
 
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (productForm.imageUrl) {
+      const valid = await validateImage(productForm.imageUrl);
+      if (!valid) {
+        setProductImgError(
+          `La imagen debe ser JPG o PNG y no superar ${MAX_IMAGE_WIDTH}x${MAX_IMAGE_HEIGHT}px`
+        );
+        return;
+      }
+    }
+    setProductImgError(null);
     const method = editingProductId ? "PUT" : "POST";
     const url = editingProductId
       ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/products/${editingProductId}`
@@ -457,6 +496,7 @@ function Admin() {
                 setCabinForm({ ...cabinForm, imageUrl: e.target.value })
               }
             />
+            {cabinImgError && <p className="error">{cabinImgError}</p>}
             <select
               value={cabinForm.available ? "1" : "0"}
               onChange={e =>
@@ -683,6 +723,7 @@ function Admin() {
               }
               required
             />
+            {productImgError && <p className="error">{productImgError}</p>}
             <input
               placeholder="Categoría"
               value={productForm.category}
