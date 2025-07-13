@@ -77,3 +77,8 @@
     border-radius: 4px;
     cursor: pointer;
 }
+
+.admin-form .error {
+    color: #dc2626;
+    width: 100%;
+}
