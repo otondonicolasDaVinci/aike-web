@@ -224,7 +224,7 @@ function Home() {
                         <img
                             src={parejaAike}
                             alt="Pareja fundadora de Aike"
-                            className="h-96 w-full object-cover rounded-lg shadow-lg mx-auto object-[center_25%] scale-90"
+                            className="h-96 w-full object-cover rounded-lg shadow-lg mx-auto object-[center_20%] scale-90"
                         />
                         <div>
                             <h3 className="text-2xl font-semibold mb-6 text-teal-700">El sueño de Aike</h3>
