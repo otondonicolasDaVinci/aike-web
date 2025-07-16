@@ -127,7 +127,6 @@ function Home() {
 
     return (
         <>
-            <Navbar />
             <section id="inicio" className="hero h-screen flex items-center justify-center pt-16">
                 <div className="container mx-auto px-4 text-center">
                     <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Descubre la magia de la Patagonia</h1>
