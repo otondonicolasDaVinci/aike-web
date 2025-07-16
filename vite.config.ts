@@ -11,7 +11,7 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      '/cabins': 'https://ymucpmxkp3.us-east-1.awsapprunner.com'
+      '/cabins': process.env.VITE_API_BASE_URL as string
     }
   }
 })

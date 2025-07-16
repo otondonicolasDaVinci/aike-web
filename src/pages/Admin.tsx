@@ -4,6 +4,8 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import "./styles/Admin.css";
 
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 
 type User = {
   id?: number;
@@ -112,34 +114,22 @@ async function validateImage(url: string) {
 }
 
   const fetchUsers = useCallback(async () => {
-    const res = await fetch(
-      "https://ymucpmxkp3.us-east-1.awsapprunner.com/users",
-      { headers }
-    );
+    const res = await fetch(`${API_URL}/users`, { headers });
     if (res.ok) setUsers(await res.json());
   }, [headers]);
 
   const fetchCabins = useCallback(async () => {
-    const res = await fetch(
-      "https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins",
-      { headers }
-    );
+    const res = await fetch(`${API_URL}/cabins`, { headers });
     if (res.ok) setCabins(await res.json());
   }, [headers]);
 
   const fetchReservations = useCallback(async () => {
-    const res = await fetch(
-      "https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations",
-      { headers }
-    );
+    const res = await fetch(`${API_URL}/reservations`, { headers });
     if (res.ok) setReservations(await res.json());
   }, [headers]);
 
   const fetchProducts = useCallback(async () => {
-    const res = await fetch(
-      "https://ymucpmxkp3.us-east-1.awsapprunner.com/products",
-      { headers }
-    );
+    const res = await fetch(`${API_URL}/products`, { headers });
     if (res.ok) setProducts(await res.json());
   }, [headers]);
 
@@ -169,8 +159,8 @@ async function validateImage(url: string) {
     e.preventDefault();
     const method = editingUserId ? "PUT" : "POST";
     const url = editingUserId
-      ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/users/${editingUserId}`
-      : "https://ymucpmxkp3.us-east-1.awsapprunner.com/users";
+      ? `${API_URL}/users/${editingUserId}`
+      : `${API_URL}/users`;
     await fetch(url, { method, headers, body: JSON.stringify(userForm) });
     setUserForm({
       name: "",
@@ -197,8 +187,8 @@ async function validateImage(url: string) {
     setCabinImgError(null);
     const method = editingCabinId ? "PUT" : "POST";
     const url = editingCabinId
-      ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins/${editingCabinId}`
-      : "https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins";
+      ? `${API_URL}/cabins/${editingCabinId}`
+      : `${API_URL}/cabins`;
     await fetch(url, { method, headers, body: JSON.stringify(cabinForm) });
     setCabinForm({
       name: "",
@@ -215,8 +205,8 @@ async function validateImage(url: string) {
     e.preventDefault();
     const method = editingResId ? "PUT" : "POST";
     const url = editingResId
-      ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations/${editingResId}`
-      : "https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations";
+      ? `${API_URL}/reservations/${editingResId}`
+      : `${API_URL}/reservations`;
 
     const body = editingResId
       ? {
@@ -260,8 +250,8 @@ async function validateImage(url: string) {
     setProductImgError(null);
     const method = editingProductId ? "PUT" : "POST";
     const url = editingProductId
-      ? `https://ymucpmxkp3.us-east-1.awsapprunner.com/products/${editingProductId}`
-      : "https://ymucpmxkp3.us-east-1.awsapprunner.com/products";
+      ? `${API_URL}/products/${editingProductId}`
+      : `${API_URL}/products`;
 
     await fetch(url, { method, headers, body: JSON.stringify(productForm) });
     setProductForm({
@@ -276,10 +266,7 @@ async function validateImage(url: string) {
   };
 
   const handleDelete = async (entity: string, id: number) => {
-    await fetch(
-      `https://ymucpmxkp3.us-east-1.awsapprunner.com/${entity}/${id}`,
-      { method: "DELETE", headers }
-    );
+    await fetch(`${API_URL}/${entity}/${id}`, { method: "DELETE", headers });
     if (entity === "users") fetchUsers();
     if (entity === "cabins") fetchCabins();
     if (entity === "reservations") fetchReservations();

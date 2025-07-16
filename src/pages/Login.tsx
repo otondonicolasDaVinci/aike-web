@@ -4,6 +4,8 @@ import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
+const API_URL = import.meta.env.VITE_API_BASE_URL
+
 function Login() {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
@@ -12,7 +14,7 @@ function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
+            const res = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user, password })
@@ -40,7 +42,7 @@ function Login() {
             const name = result.user.displayName || result.user.email
 
             // Try to log in to the backend with the Google account
-            let loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
+            let loginRes = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user: name, password: 'from-google' })
@@ -48,7 +50,7 @@ function Login() {
 
             if (!loginRes.ok) {
                 // If the user does not exist, create it and try again
-                await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
+                await fetch(`${API_URL}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -59,7 +61,7 @@ function Login() {
                         role: { id: 2 }
                     })
                 })
-                loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
+                loginRes = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user: name, password: 'from-google' })

@@ -3,6 +3,8 @@ import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles/Reservation.css';
 
+const API_URL = import.meta.env.VITE_API_BASE_URL;
+
 function decodeToken(token: string) {
   try {
     const payload = JSON.parse(atob(token.split('.')[1]));
@@ -42,7 +44,7 @@ function Reservation() {
     const payload = decodeToken(token);
     const userId = payload?.s;
     try {
-      const res = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/reservations', {
+      const res = await fetch(`${API_URL}/reservations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +71,7 @@ function Reservation() {
       const amount = nights > 0 ? nights * 100 : 100;
 
       const paymentRes = await fetch(
-        'https://ymucpmxkp3.us-east-1.awsapprunner.com/api/payments',
+        `${API_URL}/api/payments`,
         {
           method: 'POST',
           headers: {
