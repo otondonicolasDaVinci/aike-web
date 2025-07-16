@@ -151,9 +151,6 @@ async function validateImage(url: string) {
     navigate("/");
   };
 
-  const handleHome = () => {
-    navigate("/");
-  };
 
   const handleUserSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -300,9 +297,6 @@ async function validateImage(url: string) {
           onClick={() => setTab("products")}
         >
           Productos
-        </button>
-        <button onClick={handleHome} className="home">
-          Inicio
         </button>
         <button onClick={handleLogout} className="logout">
           Logout

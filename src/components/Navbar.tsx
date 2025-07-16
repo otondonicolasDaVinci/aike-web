@@ -1,28 +1,66 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
 
 function Navbar() {
     const { user } = useAuth();
-    const token = localStorage.getItem('token');
-    let role = localStorage.getItem('role');
-    if (!role && token) {
-        try {
-            role = JSON.parse(atob(token.split('.')[1])).r;
-        } catch {
-            role = null;
+    const location = useLocation();
+    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [role, setRole] = useState<string | null>(() => {
+        const storedRole = localStorage.getItem('role');
+        if (storedRole) return storedRole;
+        if (token) {
+            try {
+                return JSON.parse(atob(token.split('.')[1])).r;
+            } catch {
+                return null;
+            }
         }
-    }
+        return null;
+    });
     const isAdmin = role === 'ADMIN';
     const [menuOpen, setMenuOpen] = useState(false);
+
+    const handleSectionLink = (id: string) => (e: React.MouseEvent<HTMLElement>) => {
+        e.preventDefault();
+        setMenuOpen(false);
+        const scrollTo = () => {
+            const section = document.getElementById(id);
+            section?.scrollIntoView({ behavior: 'smooth' });
+        };
+        if (location.pathname !== '/') {
+            navigate('/');
+            setTimeout(scrollTo, 100);
+        } else {
+            scrollTo();
+        }
+    };
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const t = localStorage.getItem('token');
+        let r = localStorage.getItem('role');
+        if (!r && t) {
+            try {
+                r = JSON.parse(atob(t.split('.')[1])).r;
+            } catch {
+                r = null;
+            }
+        }
+        setToken(t);
+        setRole(r);
+    }, [location]);
 
     const handleLogout = async () => {
         if (user) await signOut(auth);
         localStorage.removeItem('token');
         localStorage.removeItem('role');
-        window.location.reload();
+        setToken(null);
+        setRole(null);
+        navigate('/');
     };
 
     return (
@@ -35,11 +73,11 @@ function Navbar() {
                     <h1 className="text-2xl font-bold text-teal-700">Aike</h1>
                 </div>
                 <div className="hidden md:flex space-x-8">
-                    <a href="#inicio" className="text-gray-700 hover:text-teal-700 font-medium">Inicio</a>
-                    <a href="#nosotros" className="text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
-                    <a href="#cabanas" className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
-                    <a href="#ubicacion" className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
-                    <a href="#contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                    <Link to="/" className="text-gray-700 hover:text-teal-700 font-medium">Inicio</Link>
+                    <a href="#nosotros" onClick={handleSectionLink('nosotros')} className="text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
+                    <a href="#cabanas" onClick={handleSectionLink('cabanas')} className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
+                    <a href="#ubicacion" onClick={handleSectionLink('ubicacion')} className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
+                    <a href="#contacto" onClick={handleSectionLink('contacto')} className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
                     {isAdmin && (
                         <Link to="/admin" className="text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
@@ -63,11 +101,11 @@ function Navbar() {
             </div>
             {menuOpen && (
                 <div className="md:hidden bg-white pb-4 px-4">
-                    <a href="#inicio" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Inicio</a>
-                    <a href="#nosotros" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
-                    <a href="#cabanas" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
-                    <a href="#ubicacion" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
-                    <a href="#contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                    <Link to="/" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Inicio</Link>
+                    <a href="#nosotros" onClick={handleSectionLink('nosotros')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
+                    <a href="#cabanas" onClick={handleSectionLink('cabanas')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
+                    <a href="#ubicacion" onClick={handleSectionLink('ubicacion')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
+                    <a href="#contacto" onClick={handleSectionLink('contacto')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
                     {isAdmin && (
                         <Link to="/admin" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
