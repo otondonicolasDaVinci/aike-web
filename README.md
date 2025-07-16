@@ -1,71 +1,47 @@
-# React + TypeScript + Vite
+# Manual de Usuario - Aike Web
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aike Web es el portal para reservar y gestionar tu estadía en nuestras cabañas de la Patagonia. A continuación encontrarás los pasos para utilizar el sitio web y la aplicación móvil.
 
-Currently, two official plugins are available:
+## 1. Registro e inicio de sesión
+1. Abre [https://aike-web.vercel.app/](https://aike-web.vercel.app/).
+2. Haz clic en **Registrarse** si es tu primera vez o en **Iniciar sesión** para ingresar.
+3. Completa los campos de registro: nombre, apellido, DNI, correo electrónico, contraseña, teléfono y foto.
+4. Acepta los términos y políticas.
+5. Pulsa **Crear cuenta**. También puedes usar **Iniciar sesión con Google**.
+6. Recibirás un correo de bienvenida y podrás iniciar sesión.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 2. Reservar una cabaña desde la web
+1. Inicia sesión con tu cuenta.
+2. Filtra por fecha de ingreso, fecha de salida y número de huéspedes.
+3. Elige la cabaña deseada y haz clic en **Reservar**.
+4. Completa el formulario de pago mediante **Mercado Pago**.
+5. Al finalizar, recibirás una confirmación por correo con los detalles de tu reserva y un enlace para descargar la app.
 
-## Expanding the ESLint configuration
+## 3. Descarga y primer acceso en la app
+1. Desde la **App Store**, busca "AIKE" y descárgala.
+2. Abre la aplicación e inicia sesión con el mismo correo y contraseña utilizados en la web (no se permite un nuevo registro desde la app).
+3. Aparecerá un tutorial interactivo que explica la navegación básica.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 4. Sección Reserva
+1. En la app, toca el ícono **Reserva** en la barra inferior.
+2. Visualiza las fechas, número de huéspedes, nombre de la cabaña y un mapa con la ubicación.
+3. También encontrarás los teléfonos de emergencia.
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+## 5. Sección Llave (QR)
+1. Selecciona **Llave (QR)** en el menú inferior.
+2. Muestra el código QR al lector de la puerta para acceder a la cabaña.
+3. Si tienes problemas, pulsa **Contactar Administración**.
 
-## EmailJS configuration
+## 6. Sección Productos
+1. Toca **Productos**.
+2. Explora el catálogo de artículos regionales y agrega lo que desees al carrito.
+3. Completa la compra mediante **Mercado Pago**.
+4. Presenta el comprobante en el hall para retirar tus productos.
 
-The contact form uses [EmailJS](https://www.emailjs.com/) to send emails. Create a `.env` file with your EmailJS identifiers and keys:
+## 7. Sección Perfil
+1. Ingresa en **Perfil**.
+2. Revisa tus datos personales: nombre, correo, teléfono y foto.
+3. Si necesitas modificar algo, selecciona **Llamar a Recepción** para que nuestro personal te asista.
 
-```bash
-VITE_EMAILJS_SERVICE_ID=service_avm0zsb
-VITE_EMAILJS_TEMPLATE_ID=<your_template_id>
-VITE_EMAILJS_PUBLIC_KEY=Izr9ANjtI9QR5eEQe
-# Optional: only needed for server-side requests
-VITE_EMAILJS_PRIVATE_KEY=3PLJ9wFVrWG47fSu0oH3Y
-VITE_CONTACT_EMAIL=otondonicolas@gmail.com
-```
+¡Listo! Con estos pasos podrás disfrutar de tu experiencia en Aike tanto desde la web como desde la aplicación móvil.
 
-Replace the placeholder values with the details from your EmailJS account.
-
-`VITE_CONTACT_EMAIL` sets the recipient address for form submissions.
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
