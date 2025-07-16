@@ -14,13 +14,13 @@ function Contact() {
         const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string
         const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
         const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
-        const toEmail = import.meta.env.VITE_CONTACT_EMAIL as string
+        const toEmail = import.meta.env.VITE_EMAILJS_TO_EMAIL as string
 
         emailjs
             .send(
                 serviceId,
                 templateId,
-                { from_name: name, reply_to: email, message, to_email: toEmail },
+                { from_name: name, reply_to: email, message, to: toEmail },
                 publicKey
             )
             .then(() => {
