@@ -162,23 +162,12 @@ function Home() {
                 <div className="container mx-auto px-4">
                     <h2 className="text-3xl font-bold text-center mb-12">Nuestra Historia</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                        <img
-                            src={parejaAike}
-                            alt="Pareja fundadora de Aike"
-                            className="h-96 w-full object-cover rounded-lg shadow-lg mx-auto object-[center_20%] scale-90"
-                        />
+                        <img src={parejaAike} alt="Pareja fundadora de Aike" className="h-96 w-full object-cover rounded-lg shadow-lg mx-auto object-[center_20%] scale-90" />
                         <div>
                             <h3 className="text-2xl font-semibold mb-6 text-teal-700">El sueño de Aike</h3>
-                            <p className="text-gray-700 mb-6 leading-relaxed">
-                                Aike, que significa "lugar" en lengua tehuelche, nació en 2005 del sueño de la familia Mendoza,
-                                oriunda de El Calafate. Después de tres generaciones viviendo en la Patagonia, Carlos y Elena Mendoza decidieron compartir la belleza de su tierra con viajeros de todo el mundo.
-                            </p>
-                            <p className="text-gray-700 mb-6 leading-relaxed">
-                                Todo comenzó cuando heredaron un terreno familiar con vistas privilegiadas a las montañas y el lago. Con sus ahorros y mucho esfuerzo, construyeron la primera cabaña utilizando maderas nativas y técnicas tradicionales patagónicas, respetando el entorno natural que tanto amaban.
-                            </p>
-                            <p className="text-gray-700 leading-relaxed">
-                                Lo que comenzó como un pequeño emprendimiento familiar se ha convertido hoy en un referente de hospitalidad en la región, manteniendo siempre la calidez y el servicio personalizado que caracteriza a la familia Mendoza. Cada cabaña ha sido diseñada y construida con amor, preservando la esencia de la Patagonia en cada detalle.
-                            </p>
+                            <p className="text-gray-700 mb-6 leading-relaxed">Aike, que significa "lugar" en lengua tehuelche, nació en 2005 del sueño de la familia Mendoza, oriunda de El Calafate. Después de tres generaciones viviendo en la Patagonia, Carlos y Elena Mendoza decidieron compartir la belleza de su tierra con viajeros de todo el mundo.</p>
+                            <p className="text-gray-700 mb-6 leading-relaxed">Todo comenzó cuando heredaron un terreno familiar con vistas privilegiadas a las montañas y el lago. Con sus ahorros y mucho esfuerzo, construyeron la primera cabaña utilizando maderas nativas y técnicas tradicionales patagónicas, respetando el entorno natural que tanto amaban.</p>
+                            <p className="text-gray-700 leading-relaxed">Lo que comenzó como un pequeño emprendimiento familiar se ha convertido hoy en un referente de hospitalidad en la región, manteniendo siempre la calidez y el servicio personalizado que caracteriza a la familia Mendoza. Cada cabaña ha sido diseñada y construida con amor, preservando la esencia de la Patagonia en cada detalle.</p>
                         </div>
                     </div>
 
@@ -264,23 +253,14 @@ function Home() {
                                             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                                         </svg>
                                     )}
-
-                            </div>
-
                                 </div>
-                        
                                 <div className="p-6 flex flex-col">
                                     <h3 className="text-xl font-semibold mb-2">{cabin.name}</h3>
                                     <p className="text-gray-600 mb-4 flex-grow">{cabin.description}</p>
                                     <div className="flex justify-between items-center mb-4">
                                         <span className="text-teal-700 font-bold text-xl">Capacidad: {cabin.capacity}</span>
                                     </div>
-                                    <button
-                                        className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition duration-300"
-                                        onClick={() => handleReserve(cabin.id)}
-                                    >
-                                        Reservar
-                                    </button>
+                                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md transition duration-300" onClick={() => handleReserve(cabin.id)}>Reservar</button>
                                 </div>
                             </div>
                         ))}
@@ -293,50 +273,30 @@ function Home() {
                     <h2 className="text-3xl font-bold text-center mb-12">Nuestra ubicación</h2>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                         <div>
-                            <iframe
-                                title="Mapa de Aike Cabañas"
-                                className="w-full h-64 md:h-96 rounded-lg"
-                                src="https://www.google.com/maps?q=Aike+Caba%C3%B1as&output=embed"
-                                loading="lazy"
-                            ></iframe>
+                            <iframe title="Mapa de Aike Cabañas" className="w-full h-64 md:h-96 rounded-lg" src="https://www.google.com/maps?q=Aike+Caba%C3%B1as&output=embed" loading="lazy"></iframe>
                         </div>
                         <div>
                             <h3 className="text-2xl font-semibold mb-4">En el corazón de la Patagonia</h3>
                             <p className="text-gray-600 mb-6">Nuestras cabañas se encuentran estratégicamente ubicadas en el sur de la Patagonia Argentina, a solo:</p>
                             <ul className="space-y-3 mb-8">
                                 <li className="flex items-start">
-                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
+                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                                     <span>15 minutos del Parque Nacional Los Glaciares</span>
                                 </li>
                                 <li className="flex items-start">
-                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
+                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                                     <span>30 minutos del Glaciar Perito Moreno</span>
                                 </li>
                                 <li className="flex items-start">
-                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
+                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                                     <span>5 minutos del centro de El Calafate</span>
                                 </li>
                                 <li className="flex items-start">
-                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                    </svg>
+                                    <svg className="w-5 h-5 text-teal-600 mr-2 mt-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                                     <span>2 horas de El Chaltén y el Monte Fitz Roy</span>
                                 </li>
                             </ul>
-                            <a
-                                href="https://maps.app.goo.gl/N4DMUKS1mwNMS9AYA"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 inline-block"
-                            >
-                                Ver en el mapa
-                            </a>
+                            <a href="https://maps.app.goo.gl/N4DMUKS1mwNMS9AYA" target="_blank" rel="noopener noreferrer" className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 inline-block">Ver en el mapa</a>
                         </div>
                     </div>
                 </div>
