@@ -1,3 +1,4 @@
+import BackButton from "../components/BackButton";
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import './styles/Reservation.css';
@@ -99,6 +100,7 @@ function Reservation() {
 
   return (
     <div className="reservation-container">
+  <BackButton />
       <h2>Reservar cabaña {id}</h2>
       <form onSubmit={handleSubmit} className="reservation-form">
         <label>
