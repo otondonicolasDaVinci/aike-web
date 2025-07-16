@@ -31,6 +31,23 @@ export default tseslint.config({
 })
 ```
 
+## EmailJS configuration
+
+The contact form uses [EmailJS](https://www.emailjs.com/) to send emails. Create a `.env` file with your EmailJS identifiers and keys:
+
+```bash
+VITE_EMAILJS_SERVICE_ID=service_avm0zsb
+VITE_EMAILJS_TEMPLATE_ID=<your_template_id>
+VITE_EMAILJS_PUBLIC_KEY=Izr9ANjtI9QR5eEQe
+# Optional: only needed for server-side requests
+VITE_EMAILJS_PRIVATE_KEY=3PLJ9wFVrWG47fSu0oH3Y
+VITE_CONTACT_EMAIL=otondonicolas@gmail.com
+```
+
+Replace the placeholder values with the details from your EmailJS account.
+
+`VITE_CONTACT_EMAIL` sets the recipient address for form submissions.
+
 You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
 
 ```js

@@ -1,5 +1,6 @@
 import './styles/Contact.css'
 import type { FormEvent } from 'react'
+import emailjs from '@emailjs/browser'
 
 function Contact() {
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -10,11 +11,26 @@ function Contact() {
         const email = formData.get('email') as string
         const message = formData.get('message') as string
 
-        const mailto = `mailto:otondonicolas@gmail.com?subject=${encodeURIComponent(
-            `Consulta de ${name}`
-        )}&body=${encodeURIComponent(`${message}\n\nDe: ${name} <${email}>`)}`
-        window.location.href = mailto
-        form.reset()
+        const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID as string
+        const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string
+        const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string
+        const toEmail = import.meta.env.VITE_CONTACT_EMAIL as string
+
+        emailjs
+            .send(
+                serviceId,
+                templateId,
+                { from_name: name, reply_to: email, message, to_email: toEmail },
+                publicKey
+            )
+            .then(() => {
+                alert('Consulta enviada')
+                form.reset()
+            })
+            .catch((err) => {
+                console.error('Error al enviar email', err)
+                alert('No se pudo enviar la consulta')
+            })
     }
 
     return (
