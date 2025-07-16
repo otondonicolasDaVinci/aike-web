@@ -4,6 +4,8 @@ import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
+const API_URL = import.meta.env.VITE_API_BASE_URL
+
 function Register() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -14,7 +16,7 @@ function Register() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         try {
-            await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
+            await fetch(`${API_URL}/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -35,7 +37,7 @@ function Register() {
         try {
             const result = await signInWithPopup(auth, provider)
             const name = result.user.displayName || username
-            await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
+            await fetch(`${API_URL}/users`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

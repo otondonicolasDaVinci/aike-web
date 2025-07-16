@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import 'styles/Cabins.css'
 
+const API_URL = import.meta.env.VITE_API_BASE_URL
+
 type Cabin = {
     id: number
     name: string
@@ -18,7 +20,7 @@ function Cabins() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins')
+        fetch(`${API_URL}/cabins`)
             .then((response) => {
                 if (!response.ok) throw new Error('Error al cargar las cabañas')
                 return response.json()

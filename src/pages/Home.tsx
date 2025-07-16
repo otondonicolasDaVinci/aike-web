@@ -3,9 +3,10 @@ import { useAuth } from '../context/AuthContext'
 import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 import { useNavigate } from 'react-router-dom'
-import Navbar from '../components/Navbar'
 import 'styles/Home.css'
 import parejaAike from '../assets/pareja_aike.png'
+
+const API_URL = import.meta.env.VITE_API_BASE_URL
 
 function Home() {
     const { user } = useAuth()
@@ -32,7 +33,7 @@ function Home() {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/cabins')
+        fetch(`${API_URL}/cabins`)
             .then((response) => {
                 if (!response.ok) throw new Error('Error al cargar las cabañas')
                 return response.json()
@@ -51,14 +52,14 @@ function Home() {
         try {
             const result = await signInWithPopup(auth, provider)
             const name = result.user.displayName || result.user.email
-            let loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
+            let loginRes = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ user: name, password: 'from-google' })
             })
 
             if (!loginRes.ok) {
-                await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/users', {
+                await fetch(`${API_URL}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -69,7 +70,7 @@ function Home() {
                         role: { id: 2 }
                     })
                 })
-                loginRes = await fetch('https://ymucpmxkp3.us-east-1.awsapprunner.com/auth/login', {
+                loginRes = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user: name, password: 'from-google' })
