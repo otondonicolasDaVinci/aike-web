@@ -8,6 +8,7 @@ function Contact() {
         const form = e.currentTarget
         const formData = new FormData(form)
         const name = formData.get('name') as string
+        const concept = formData.get('concept') as string
         const email = formData.get('email') as string
         const message = formData.get('message') as string
 
@@ -20,7 +21,14 @@ function Contact() {
             .send(
                 serviceId,
                 templateId,
-                { from_name: name, reply_to: email, message, to: toEmail },
+                {
+                    from_name: name,
+                    reply_to: email,
+                    message,
+                    to: toEmail,
+                    name,
+                    title: concept,
+                },
                 publicKey
             )
             .then(() => {
@@ -46,6 +54,10 @@ function Contact() {
                 <label>
                     Nombre
                     <input type="text" name="name" required />
+                </label>
+                <label>
+                    Concepto
+                    <input type="text" name="concept" required />
                 </label>
                 <label>
                     Email
