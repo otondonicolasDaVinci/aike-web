@@ -77,7 +77,7 @@ function Navbar() {
                     <a href="#nosotros" onClick={handleSectionLink('nosotros')} className="text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
                     <a href="#cabanas" onClick={handleSectionLink('cabanas')} className="text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                     <a href="#ubicacion" onClick={handleSectionLink('ubicacion')} className="text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
-                    <a href="#contacto" onClick={handleSectionLink('contacto')} className="text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                    <Link to="/contacto" className="text-gray-700 hover:text-teal-700 font-medium">Contacto</Link>
                     {isAdmin && (
                         <Link to="/admin" className="text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
@@ -105,7 +105,7 @@ function Navbar() {
                     <a href="#nosotros" onClick={handleSectionLink('nosotros')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Nosotros</a>
                     <a href="#cabanas" onClick={handleSectionLink('cabanas')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Cabañas</a>
                     <a href="#ubicacion" onClick={handleSectionLink('ubicacion')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Ubicación</a>
-                    <a href="#contacto" onClick={handleSectionLink('contacto')} className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</a>
+                    <Link to="/contacto" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Contacto</Link>
                     {isAdmin && (
                         <Link to="/admin" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
