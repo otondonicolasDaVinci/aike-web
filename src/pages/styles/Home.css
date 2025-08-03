@@ -14,11 +14,6 @@ body {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.date-picker {
-    background-color: rgba(255, 255, 255, 0.9);
-    backdrop-filter: blur(5px);
-}
-
 .about-image {
     background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'%3E%3Crect width='600' height='400' fill='%23184E77'/%3E%3Cpath d='M0 300 L100 250 L200 280 L300 220 L400 260 L500 200 L600 240 L600 400 L0 400 Z' fill='%231A759F'/%3E%3Cpath d='M0 320 L100 310 L200 330 L300 300 L400 340 L500 310 L600 330 L600 400 L0 400 Z' fill='%2334A0A4'/%3E%3Cpath d='M0 350 L100 340 L200 360 L300 340 L400 370 L500 350 L600 360 L600 400 L0 400 Z' fill='%2376C893'/%3E%3C/svg%3E");
     background-size: cover;
