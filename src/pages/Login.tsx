@@ -39,13 +39,17 @@ function Login() {
     const handleGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || result.user.email
+            const email = result.user.email
+            if (!email) {
+                alert('No se pudo obtener el email de Google')
+                return
+            }
 
             // Try to log in to the backend with the Google account
             let loginRes = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: name, password: 'from-google' })
+                body: JSON.stringify({ user: email, password: 'from-google' })
             })
 
             if (!loginRes.ok) {
@@ -54,8 +58,8 @@ function Login() {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        name,
-                        email: result.user.email,
+                        name: result.user.displayName || email,
+                        email,
                         dni: '',
                         password: 'from-google',
                         role: { id: 2 }
@@ -64,7 +68,7 @@ function Login() {
                 loginRes = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user: name, password: 'from-google' })
+                    body: JSON.stringify({ user: email, password: 'from-google' })
                 })
             }
 
@@ -81,8 +85,7 @@ function Login() {
                 }
                 navigate(role === 'ADMIN' ? '/admin' : '/')
             } else {
-                localStorage.setItem('role', 'CLIENT')
-                navigate('/')
+                alert('Error al iniciar sesión')
             }
         } catch {
             alert('Error al iniciar sesión')
