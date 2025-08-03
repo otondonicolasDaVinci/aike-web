@@ -30,6 +30,9 @@ function Home() {
     const [cabins, setCabins] = useState<Cabin[]>([])
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
+    const [startDate, setStartDate] = useState('')
+    const [endDate, setEndDate] = useState('')
+    const [guests, setGuests] = useState('1')
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -126,6 +129,32 @@ function Home() {
         navigate(`/reservation/${id}`)
     }
 
+    const handleSearch = async () => {
+        if (!startDate || !endDate) {
+            alert('Por favor selecciona las fechas de tu estadía')
+            return
+        }
+        setLoading(true)
+        try {
+            const params = new URLSearchParams({
+                startDate,
+                endDate,
+                guests,
+            })
+            const res = await fetch(`${API_URL}/cabins/available?${params.toString()}`)
+            if (!res.ok) throw new Error('Error al buscar disponibilidad')
+            const data = await res.json()
+            setCabins(data)
+            setError(null)
+        } catch (err) {
+            const message = err instanceof Error ? err.message : 'Error al buscar disponibilidad'
+            setError(message)
+            setCabins([])
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return (
         <>
             <section id="inicio" className="hero h-screen flex items-center justify-center pt-16">
@@ -135,29 +164,48 @@ function Home() {
                     <div className="date-picker p-6 rounded-lg max-w-3xl mx-auto">
                         <h3 className="text-xl font-semibold text-gray-800 mb-4">Reserva tu estadía</h3>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de llegada</label>
-                                <input type="date" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de salida</label>
-                                <input type="date" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Huéspedes</label>
-                                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option>1 persona</option>
-                                    <option>2 personas</option>
-                                    <option>3 personas</option>
-                                    <option>4 personas</option>
-                                    <option>5+ personas</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 w-full md:w-auto">Buscar disponibilidad</button>
-                    </div>
-                </div>
-            </section>
+                             <div>
+                                 <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de llegada</label>
+                                 <input
+                                     type="date"
+                                     value={startDate}
+                                     onChange={e => setStartDate(e.target.value)}
+                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                 />
+                             </div>
+                             <div>
+                                 <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de salida</label>
+                                 <input
+                                     type="date"
+                                     value={endDate}
+                                     onChange={e => setEndDate(e.target.value)}
+                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                 />
+                             </div>
+                             <div>
+                                 <label className="block text-gray-700 text-sm font-medium mb-2">Huéspedes</label>
+                                 <select
+                                     value={guests}
+                                     onChange={e => setGuests(e.target.value)}
+                                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                                 >
+                                     <option value="1">1 persona</option>
+                                     <option value="2">2 personas</option>
+                                     <option value="3">3 personas</option>
+                                     <option value="4">4 personas</option>
+                                     <option value="5">5+ personas</option>
+                                 </select>
+                             </div>
+                          </div>
+                          <button
+                              className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 w-full md:w-auto"
+                              onClick={handleSearch}
+                          >
+                              Buscar disponibilidad
+                          </button>
+                      </div>
+                  </div>
+              </section>
 
             <section id="nosotros" className="py-16 bg-white">
                 <div className="container mx-auto px-4">
