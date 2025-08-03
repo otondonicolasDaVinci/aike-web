@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
@@ -39,23 +39,26 @@ function Login() {
     const handleGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || result.user.email
+            const email = result.user.email
+            if (!email) {
+                alert('No se pudo obtener el email de Google')
+                await signOut(auth)
+                return
+            }
 
-            // Try to log in to the backend with the Google account
             let loginRes = await fetch(`${API_URL}/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: name, password: 'from-google' })
+                body: JSON.stringify({ user: email, password: 'from-google' })
             })
 
             if (!loginRes.ok) {
-                // If the user does not exist, create it and try again
                 await fetch(`${API_URL}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        name,
-                        email: result.user.email,
+                        name: result.user.displayName || email,
+                        email,
                         dni: '',
                         password: 'from-google',
                         role: { id: 2 }
@@ -64,7 +67,7 @@ function Login() {
                 loginRes = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user: name, password: 'from-google' })
+                    body: JSON.stringify({ user: email, password: 'from-google' })
                 })
             }
 
@@ -81,10 +84,11 @@ function Login() {
                 }
                 navigate(role === 'ADMIN' ? '/admin' : '/')
             } else {
-                localStorage.setItem('role', 'CLIENT')
-                navigate('/')
+                await signOut(auth)
+                alert('Error al iniciar sesión')
             }
         } catch {
+            await signOut(auth)
             alert('Error al iniciar sesión')
         }
     }
