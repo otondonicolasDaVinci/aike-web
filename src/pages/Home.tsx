@@ -309,7 +309,7 @@ function Home() {
                 ) : (
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300" onClick={handleLogout}>Cerrar sesión</button>
                 )}
-                <p className="text-gray-600 mt-4">© 2025 Aike · Proyecto de tesis · Da Vinci</p>
+                <p className="text-gray-600 mt-4">© 2025 Aike · Proyecto de tesis · Da Vinci · Mario Acosta · Nicolas Otondo · Florencia Verratti · Lucas Gomez </p>
             </footer>
         </>
     )
