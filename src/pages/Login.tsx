@@ -52,8 +52,8 @@ function Login() {
                 body: JSON.stringify({ user: email, password: 'from-google' })
             })
 
-            if (!loginRes.ok) {
-                await fetch(`${API_URL}/users`, {
+            if (loginRes.status === 401) {
+                const createRes = await fetch(`${API_URL}/users`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -64,6 +64,13 @@ function Login() {
                         role: { id: 2 }
                     })
                 })
+
+                if (!createRes.ok) {
+                    await signOut(auth)
+                    alert('Error al iniciar sesión')
+                    return
+                }
+
                 loginRes = await fetch(`${API_URL}/auth/login`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },

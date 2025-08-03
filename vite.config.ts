@@ -10,6 +10,9 @@ export default defineConfig({
     }
   },
   server: {
+    headers: {
+      'Cross-Origin-Opener-Policy': 'same-origin-allow-popups'
+    },
     proxy: {
       '/cabins': process.env.VITE_API_BASE_URL as string
     }
