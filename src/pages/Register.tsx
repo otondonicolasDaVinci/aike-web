@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signOut } from 'firebase/auth'
 import { auth, provider } from '../firebase'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
@@ -36,20 +36,38 @@ function Register() {
     const handleGoogle = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || username
-            await fetch(`${API_URL}/users`, {
+            const email = result.user.email
+            if (!email) {
+                alert('No se pudo obtener el email de Google')
+                await signOut(auth)
+                return
+            }
+
+            const idToken = await result.user.getIdToken()
+            const loginRes = await fetch(`${API_URL}/auth/login-google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    email: result.user.email,
-                    dni,
-                    password: 'from-google',
-                    role: { id: 2 }
-                })
+                body: JSON.stringify({ idToken })
             })
-            navigate('/')
+
+            if (loginRes.ok) {
+                const data = await loginRes.json()
+                localStorage.setItem('token', data.token)
+                let role = 'CLIENT'
+                try {
+                    const payload = JSON.parse(atob(data.token.split('.')[1]))
+                    role = payload.r
+                    localStorage.setItem('role', role)
+                } catch {
+                    localStorage.removeItem('role')
+                }
+                navigate(role === 'ADMIN' ? '/admin' : '/')
+            } else {
+                await signOut(auth)
+                alert('Error al iniciar sesión con Google')
+            }
         } catch {
+            await signOut(auth)
             alert('Error al iniciar sesión con Google')
         }
     }

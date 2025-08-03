@@ -51,31 +51,19 @@ function Home() {
     const handleLogin = async () => {
         try {
             const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || result.user.email
-            let loginRes = await fetch(`${API_URL}/auth/login`, {
+            const email = result.user.email
+            if (!email) {
+                alert('No se pudo obtener el email de Google')
+                await signOut(auth)
+                return
+            }
+
+            const idToken = await result.user.getIdToken()
+            const loginRes = await fetch(`${API_URL}/auth/login-google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: name, password: 'from-google' })
+                body: JSON.stringify({ idToken })
             })
-
-            if (!loginRes.ok) {
-                await fetch(`${API_URL}/users`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        email: result.user.email,
-                        dni: '',
-                        password: 'from-google',
-                        role: { id: 2 }
-                    })
-                })
-                loginRes = await fetch(`${API_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user: name, password: 'from-google' })
-                })
-            }
 
             if (loginRes.ok) {
                 const data = await loginRes.json()
@@ -90,10 +78,11 @@ function Home() {
                 }
                 navigate(role === 'ADMIN' ? '/admin' : '/')
             } else {
-                localStorage.setItem('role', 'CLIENT')
-                navigate('/')
+                await signOut(auth)
+                alert('Error al iniciar sesión')
             }
         } catch {
+            await signOut(auth)
             alert('Error al iniciar sesión')
         }
     }
