@@ -129,33 +129,9 @@ function Home() {
     return (
         <>
             <section id="inicio" className="hero h-screen flex items-center justify-center pt-16">
-                <div className="container mx-auto px-4 text-center">
-                    <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">Descubre la magia de la Patagonia</h1>
-                    <p className="text-xl md:text-2xl text-white mb-10 max-w-3xl mx-auto">Cabañas Aike, tu refugio perfecto en el corazón del sur argentino</p>
-                    <div className="date-picker p-6 rounded-lg max-w-3xl mx-auto">
-                        <h3 className="text-xl font-semibold text-gray-800 mb-4">Reserva tu estadía</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de llegada</label>
-                                <input type="date" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Fecha de salida</label>
-                                <input type="date" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500" />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-2">Huéspedes</label>
-                                <select className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500">
-                                    <option>1 persona</option>
-                                    <option>2 personas</option>
-                                    <option>3 personas</option>
-                                    <option>4 personas</option>
-                                    <option>5+ personas</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-6 rounded-md transition duration-300 w-full md:w-auto">Buscar disponibilidad</button>
-                    </div>
+                <div className="container mx-auto px-4 text-center space-y-8">
+                    <h1 className="text-5xl md:text-7xl font-bold text-white">Descubre la magia de la Patagonia</h1>
+                    <p className="text-2xl md:text-3xl text-white max-w-4xl mx-auto">Cabañas Aike, tu refugio perfecto en el corazón del sur argentino</p>
                 </div>
             </section>
 
