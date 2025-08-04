@@ -47,7 +47,7 @@ function Login() {
             }
 
             const idToken = await result.user.getIdToken()
-            const loginRes = await fetch(`${API_URL}/auth/login-google-web`, {
+            const loginRes = await fetch(`${API_URL}/auth/login-google`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ idToken })
