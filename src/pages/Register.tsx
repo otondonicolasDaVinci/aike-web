@@ -39,10 +39,12 @@ function Register() {
                 return
             }
             const data = await loginRes.json()
-            localStorage.setItem('token', data.token)
+            const rawToken: string = data.token
+            const token = rawToken.startsWith('Bearer ') ? rawToken.slice(7) : rawToken
+            localStorage.setItem('token', token)
             let role = 'CLIENT'
             try {
-                const payload = JSON.parse(atob(data.token.split('.')[1]))
+                const payload = JSON.parse(atob(token.split('.')[1]))
                 role = payload.r
                 localStorage.setItem('role', role)
             } catch {
