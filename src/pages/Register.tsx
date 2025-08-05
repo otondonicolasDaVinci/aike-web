@@ -2,6 +2,27 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
+interface GoogleAccounts {
+    accounts: {
+        id: {
+            initialize: (config: {
+                client_id: string
+                callback: (response: { credential: string }) => void
+            }) => void
+            renderButton: (
+                element: HTMLElement | null,
+                options: { theme: string; size: string }
+            ) => void
+        }
+    }
+}
+
+declare global {
+    interface Window {
+        google: GoogleAccounts | undefined
+    }
+}
+
 const API_URL = import.meta.env.VITE_API_BASE_URL
 
 function Register() {
@@ -10,21 +31,6 @@ function Register() {
     const [username, setUsername] = useState('')
     const [dni, setDni] = useState('')
     const navigate = useNavigate()
-
-    interface GoogleAccounts {
-        accounts: {
-            id: {
-                initialize: (config: { client_id: string; callback: (response: { credential: string }) => void }) => void
-                renderButton: (element: HTMLElement | null, options: { theme: string; size: string }) => void
-            }
-        }
-    }
-
-    declare global {
-        interface Window {
-            google: GoogleAccounts | undefined
-        }
-    }
 
     useEffect(() => {
         const handleCredentialResponse = async (response: { credential: string }) => {
