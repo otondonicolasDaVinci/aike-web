@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../firebase'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
@@ -10,6 +8,41 @@ function Login() {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const navigate = useNavigate()
+
+    useEffect(() => {
+        window.google?.accounts.id.initialize({
+            client_id: '959565422604-0dvq3jihm4as00tukaut3i60j2ssm25o.apps.googleusercontent.com',
+            callback: handleCredentialResponse
+        })
+        window.google?.accounts.id.renderButton(
+            document.getElementById('google-login-button'),
+            { theme: 'outline', size: 'large' }
+        )
+    }, [])
+
+    const handleCredentialResponse = async (response: any) => {
+        const idToken = response.credential
+        const loginRes = await fetch(`http://localhost:8080/auth/login-google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ idToken })
+        })
+        if (!loginRes.ok) {
+            alert('Error en login con Google')
+            return
+        }
+        const data = await loginRes.json()
+        localStorage.setItem('token', data.token)
+        let role = 'CLIENT'
+        try {
+            const payload = JSON.parse(atob(data.token.split('.')[1]))
+            role = payload.r
+            localStorage.setItem('role', role)
+        } catch {
+            localStorage.removeItem('role')
+        }
+        navigate(role === 'ADMIN' ? '/admin' : '/')
+    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -36,59 +69,6 @@ function Login() {
         }
     }
 
-    const handleGoogle = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || result.user.email
-
-            // Try to log in to the backend with the Google account
-            let loginRes = await fetch(`${API_URL}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user: name, password: 'from-google' })
-            })
-
-            if (!loginRes.ok) {
-                // If the user does not exist, create it and try again
-                await fetch(`${API_URL}/users`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name,
-                        email: result.user.email,
-                        dni: '',
-                        password: 'from-google',
-                        role: { id: 2 }
-                    })
-                })
-                loginRes = await fetch(`${API_URL}/auth/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ user: name, password: 'from-google' })
-                })
-            }
-
-            if (loginRes.ok) {
-                const data = await loginRes.json()
-                localStorage.setItem('token', data.token)
-                let role = 'CLIENT'
-                try {
-                    const payload = JSON.parse(atob(data.token.split('.')[1]))
-                    role = payload.r
-                    localStorage.setItem('role', role)
-                } catch {
-                    localStorage.removeItem('role')
-                }
-                navigate(role === 'ADMIN' ? '/admin' : '/')
-            } else {
-                localStorage.setItem('role', 'CLIENT')
-                navigate('/')
-            }
-        } catch {
-            alert('Error al iniciar sesión')
-        }
-    }
-
     return (
         <div className="auth-container">
             <h2>Iniciar Sesión</h2>
@@ -109,9 +89,7 @@ function Login() {
                 />
                 <button type="submit">Ingresar</button>
             </form>
-            <button className="google-btn" onClick={handleGoogle}>
-                Iniciar con Google
-            </button>
+            <div id="google-login-button" className="google-btn" />
             <p className="link">
                 ¿No tenés cuenta? <Link to="/register">Registrate</Link>
             </p>
