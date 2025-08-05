@@ -1,6 +1,4 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
-import { signOut } from "firebase/auth";
-import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import "./styles/Admin.css";
 
@@ -144,8 +142,7 @@ async function validateImage(url: string) {
     if (tab === "products") fetchProducts();
   }, [tab, fetchUsers, fetchCabins, fetchReservations, fetchProducts]);
 
-  const handleLogout = async () => {
-    if (auth.currentUser) await signOut(auth);
+  const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     navigate("/");

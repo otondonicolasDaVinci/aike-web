@@ -1,6 +1,4 @@
-import { useState } from 'react'
-import { signInWithPopup } from 'firebase/auth'
-import { auth, provider } from '../firebase'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
@@ -12,6 +10,56 @@ function Register() {
     const [username, setUsername] = useState('')
     const [dni, setDni] = useState('')
     const navigate = useNavigate()
+
+    interface GoogleAccounts {
+        accounts: {
+            id: {
+                initialize: (config: { client_id: string; callback: (response: { credential: string }) => void }) => void
+                renderButton: (element: HTMLElement | null, options: { theme: string; size: string }) => void
+            }
+        }
+    }
+
+    declare global {
+        interface Window {
+            google: GoogleAccounts | undefined
+        }
+    }
+
+    useEffect(() => {
+        const handleCredentialResponse = async (response: { credential: string }) => {
+            const idToken = response.credential
+            const loginRes = await fetch(`${API_URL}/auth/login-google`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken })
+            })
+            if (!loginRes.ok) {
+                alert('Error al iniciar sesión con Google')
+                return
+            }
+            const data = await loginRes.json()
+            localStorage.setItem('token', data.token)
+            let role = 'CLIENT'
+            try {
+                const payload = JSON.parse(atob(data.token.split('.')[1]))
+                role = payload.r
+                localStorage.setItem('role', role)
+            } catch {
+                localStorage.removeItem('role')
+            }
+            navigate(role === 'ADMIN' ? '/admin' : '/')
+        }
+
+        window.google?.accounts.id.initialize({
+            client_id: '959565422604-0dvq3jihm4as00tukaut3i60j2ssm25o.apps.googleusercontent.com',
+            callback: handleCredentialResponse
+        })
+        window.google?.accounts.id.renderButton(
+            document.getElementById('google-register-button'),
+            { theme: 'outline', size: 'large' }
+        )
+    }, [navigate])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -30,27 +78,6 @@ function Register() {
             navigate('/')
         } catch {
             alert('Error al registrarse')
-        }
-    }
-
-    const handleGoogle = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider)
-            const name = result.user.displayName || username
-            await fetch(`${API_URL}/users`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name,
-                    email: result.user.email,
-                    dni,
-                    password: 'from-google',
-                    role: { id: 2 }
-                })
-            })
-            navigate('/')
-        } catch {
-            alert('Error al iniciar sesión con Google')
         }
     }
 
@@ -88,9 +115,7 @@ function Register() {
                 />
                 <button type="submit">Registrarse</button>
             </form>
-            <button className="google-btn" onClick={handleGoogle}>
-                Registrarse con Google
-            </button>
+            <div id="google-register-button" className="google-btn" />
             <p className="link">
                 ¿Ya tenés cuenta? <Link to="/login">Iniciar sesión</Link>
             </p>

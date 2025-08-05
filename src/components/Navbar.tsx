@@ -1,11 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
 
 function Navbar() {
-    const { user } = useAuth();
     const location = useLocation();
     const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
     const [role, setRole] = useState<string | null>(() => {
@@ -54,8 +50,7 @@ function Navbar() {
         setRole(r);
     }, [location]);
 
-    const handleLogout = async () => {
-        if (user) await signOut(auth);
+    const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('role');
         setToken(null);
@@ -81,13 +76,13 @@ function Navbar() {
                     {isAdmin && (
                         <Link to="/admin" className="text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
-                    {!user && !token && (
+                    {!token && (
                         <>
                             <Link to="/login" className="text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
                             <Link to="/register" className="text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
                         </>
                     )}
-                    {(user || token) && (
+                    {token && (
                         <button onClick={handleLogout} className="text-gray-700 hover:text-teal-700 font-medium">Cerrar sesión</button>
                     )}
                 </div>
@@ -109,13 +104,13 @@ function Navbar() {
                     {isAdmin && (
                         <Link to="/admin" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">ABM</Link>
                     )}
-                    {!user && !token && (
+                    {!token && (
                         <>
                             <Link to="/login" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Iniciar Sesión</Link>
                             <Link to="/register" className="block py-2 text-gray-700 hover:text-teal-700 font-medium">Registrarse</Link>
                         </>
                     )}
-                    {(user || token) && (
+                    {token && (
                         <button onClick={handleLogout} className="block py-2 text-gray-700 hover:text-teal-700 font-medium text-left w-full">Cerrar sesión</button>
                     )}
                 </div>
