@@ -2,9 +2,18 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
+interface GoogleAccounts {
+    accounts: {
+        id: {
+            initialize: (config: { client_id: string; callback: (response: { credential: string }) => void }) => void
+            renderButton: (element: HTMLElement | null, options: { theme: string; size: string }) => void
+        }
+    }
+}
+
 declare global {
     interface Window {
-        google: any
+        google: GoogleAccounts | undefined
     }
 }
 
@@ -26,7 +35,7 @@ function Login() {
         )
     }, [])
 
-    const handleCredentialResponse = async (response: any) => {
+    const handleCredentialResponse = async (response: { credential: string }) => {
         const idToken = response.credential
         const loginRes = await fetch(`${API_URL}/auth/login-google`, {
             method: 'POST',
