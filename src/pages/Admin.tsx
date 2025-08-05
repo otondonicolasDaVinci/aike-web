@@ -40,11 +40,13 @@ type Product = {
   price: number;
   imageUrl: string;
   category: string;
+  stock: number;
 };
 
 function Admin() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const rawToken = localStorage.getItem("token");
+  const token = rawToken?.startsWith("Bearer ") ? rawToken.slice(7) : rawToken;
 
   const [tab, setTab] = useState<
     "users" | "cabins" | "reservations" | "products"
@@ -88,7 +90,8 @@ function Admin() {
     description: "",
     price: 0,
     imageUrl: "",
-    category: ""
+    category: "",
+    stock: 0
   });
   const [productImgError, setProductImgError] = useState<string | null>(null);
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
@@ -253,7 +256,8 @@ async function validateImage(url: string) {
       description: "",
       price: 0,
       imageUrl: "",
-      category: ""
+      category: "",
+      stock: 0
     });
     setEditingProductId(null);
     fetchProducts();
@@ -621,6 +625,7 @@ async function validateImage(url: string) {
                 <th>Precio</th>
                 <th>Imagen</th>
                 <th>Categoría</th>
+                <th>Stock</th>
                 <th>Acciones</th>
               </tr>
             </thead>
@@ -643,6 +648,7 @@ async function validateImage(url: string) {
                     )}
                   </td>
                   <td>{p.category}</td>
+                  <td>{p.stock}</td>
                   <td className="actions">
                     <button
                       onClick={() => {
@@ -685,6 +691,18 @@ async function validateImage(url: string) {
                 setProductForm({
                   ...productForm,
                   price: Number(e.target.value)
+                })
+              }
+              required
+            />
+            <input
+              type="number"
+              placeholder="Stock"
+              value={productForm.stock}
+              onChange={e =>
+                setProductForm({
+                  ...productForm,
+                  stock: Number(e.target.value)
                 })
               }
               required
