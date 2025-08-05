@@ -44,7 +44,8 @@ type Product = {
 
 function Admin() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const rawToken = localStorage.getItem("token");
+  const token = rawToken?.startsWith("Bearer ") ? rawToken.slice(7) : rawToken;
 
   const [tab, setTab] = useState<
     "users" | "cabins" | "reservations" | "products"
