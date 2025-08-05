@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import './styles/Login.css'
 
+declare global {
+    interface Window {
+        google: any
+    }
+}
+
 const API_URL = import.meta.env.VITE_API_BASE_URL
 
 function Login() {
@@ -22,7 +28,7 @@ function Login() {
 
     const handleCredentialResponse = async (response: any) => {
         const idToken = response.credential
-        const loginRes = await fetch(`http://localhost:8080/auth/login-google`, {
+        const loginRes = await fetch(`${API_URL}/auth/login-google`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idToken })
