@@ -61,6 +61,10 @@ function Reservation() {
       });
       if (!res.ok) {
         const text = await res.text();
+        if (res.status === 409 || text.toLowerCase().includes('reservada')) {
+          setError('Cabaña no disponible. Ya se encuentra reservada');
+          return;
+        }
         throw new Error(text || 'Error');
       }
       const reservation = await res.json();
