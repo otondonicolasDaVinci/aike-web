@@ -205,20 +205,15 @@ async function validateImage(url: string) {
       ? `${API_URL}/reservations/${editingResId}`
       : `${API_URL}/reservations`;
 
-    const body = editingResId
-      ? {
-          startDate: resForm.startDate,
-          endDate: resForm.endDate,
-          status: resForm.status
-        }
-      : {
-          user: { id: Number(resForm.user?.id) },
-          cabin: { id: Number(resForm.cabin?.id) },
-          startDate: resForm.startDate,
-          endDate: resForm.endDate,
-          guests: Number(resForm.guests),
-          status: resForm.status
-        };
+    const body = {
+      user: { id: Number(resForm.user?.id) },
+      cabin: { id: Number(resForm.cabin?.id) },
+      startDate: resForm.startDate,
+      endDate: resForm.endDate,
+      guests: Number(resForm.guests),
+      status: resForm.status,
+      ...(editingResId ? { id: editingResId } : {})
+    };
 
     await fetch(url, { method, headers, body: JSON.stringify(body) });
     setResForm({
@@ -604,7 +599,6 @@ async function validateImage(url: string) {
               onChange={e => setResForm({ ...resForm, status: e.target.value })}
             >
               <option value="PENDING">PENDING</option>
-              <option value="CONFIRMED">CONFIRMED</option>
               <option value="CANCELLED">CANCELLED</option>
             </select>
             <button type="submit">
