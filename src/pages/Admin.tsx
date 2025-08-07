@@ -95,6 +95,9 @@ function Admin() {
   });
   const [productImgError, setProductImgError] = useState<string | null>(null);
   const [editingProductId, setEditingProductId] = useState<number | null>(null);
+  const [deleteInfo, setDeleteInfo] = useState<{ entity: string; id: number } | null>(
+    null
+  );
 
 const headers = useMemo(() => {
   const h: Record<string, string> = { "Content-Type": "application/json" };
@@ -258,13 +261,26 @@ async function validateImage(url: string) {
     fetchProducts();
   };
 
-  const handleDelete = async (entity: string, id: number) => {
+  const deleteItem = async (entity: string, id: number) => {
     await fetch(`${API_URL}/${entity}/${id}`, { method: "DELETE", headers });
     if (entity === "users") fetchUsers();
     if (entity === "cabins") fetchCabins();
     if (entity === "reservations") fetchReservations();
     if (entity === "products") fetchProducts();
   };
+
+  const handleDelete = (entity: string, id: number) => {
+    setDeleteInfo({ entity, id });
+  };
+
+  const confirmDelete = async () => {
+    if (deleteInfo) {
+      await deleteItem(deleteInfo.entity, deleteInfo.id);
+      setDeleteInfo(null);
+    }
+  };
+
+  const cancelDelete = () => setDeleteInfo(null);
 
   return (
     <div className="admin-container">
@@ -722,6 +738,22 @@ async function validateImage(url: string) {
               {editingProductId ? "Actualizar" : "Crear"}
             </button>
           </form>
+        </div>
+      )}
+
+      {deleteInfo && (
+        <div className="confirm-overlay">
+          <div className="confirm-dialog">
+            <p>¿Seguro que deseas eliminar este elemento?</p>
+            <div className="buttons">
+              <button className="confirm" onClick={confirmDelete}>
+                Eliminar
+              </button>
+              <button className="cancel" onClick={cancelDelete}>
+                Cancelar
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
